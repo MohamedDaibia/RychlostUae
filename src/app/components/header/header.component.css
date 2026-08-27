@@ -1,0 +1,66 @@
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+  background: var(--color-navy-900);
+  padding-top: var(--space-12);
+  padding-bottom: var(--space-12);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+/* Real logo lockup image (icon + "Rychlost" + "Communication" all baked
+   in) — replaces the old inline SVG mark + separately-styled text. */
+.logo-img {
+  height: 40px;
+  width: auto;
+}
+
+.site-nav-link {
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--color-white);
+}
+
+.site-nav-link:hover,
+.site-nav-link:focus {
+  color: var(--color-cyan-500);
+}
+
+.submenu-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: none;
+  border: none;
+  color: var(--color-white);
+}
+
+.submenu-trigger svg {
+  color: rgba(255, 255, 255, 0.65);
+  flex-shrink: 0;
+}
+
+.btn-quote {
+  white-space: nowrap;
+}
+
+@media (max-width: 991.98px) {
+  .navbar-collapse {
+    align-items: flex-start;
+  }
+
+  .navbar-nav {
+    width: 100%;
+  }
+
+  .nav-item {
+    width: 100%;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  }
+}

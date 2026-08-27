@@ -1,0 +1,80 @@
+.trust-strip {
+  background: var(--color-white);
+  padding-top: var(--space-32);
+  padding-bottom: var(--space-32);
+}
+
+/* Kept to a single row on every screen size — items shrink and the row
+   scrolls horizontally on very narrow phones rather than wrapping. */
+.trust-strip-list {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-16);
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  max-width: var(--content-max-width);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.trust-strip-list::-webkit-scrollbar {
+  display: none;
+}
+
+/* Icon on top, label underneath — each item its own column, kept compact
+   (small icon + small single-line label) so all four fit one row. */
+.trust-strip-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-8);
+  flex: 1 1 0;
+  min-width: 96px;
+  padding-left: var(--space-16);
+  border-left: 1px solid var(--color-neutral-300);
+}
+
+.trust-strip-item:first-child {
+  border-left: none;
+  padding-left: 0;
+}
+
+.trust-strip-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--color-neutral-100);
+  color: var(--color-navy-700);
+  flex-shrink: 0;
+}
+
+.trust-strip-icon svg {
+  width: 15px;
+  height: 15px;
+}
+
+.trust-strip-label {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-navy-900);
+  white-space: nowrap;
+}
+
+@media (max-width: 575.98px) {
+  .trust-strip-list {
+    justify-content: flex-start;
+  }
+
+  .trust-strip-item {
+    flex: 0 0 auto;
+  }
+}
+

@@ -1,0 +1,60 @@
+// Rychlost design tokens
+// Mirrors the Figma variable collections (Rychlost/Color, Rychlost/Space, Rychlost/Radius)
+// so the Angular UI and the Figma design stay in sync. Update both places together.
+
+:root {
+  // Color — brand
+  --color-navy-900: #0a1530;
+  --color-navy-700: #122254;
+  --color-navy-500: #1f3a78;
+  --color-cyan-500: #0ce1f3;
+  --color-cyan-700: #06afc0;
+
+  // Color — neutrals
+  --color-neutral-900: #12141a;
+  --color-neutral-600: #5b6472;
+  --color-neutral-300: #dce1e8;
+  --color-neutral-100: #f5f7fa;
+  --color-white: #ffffff;
+
+  // Typography
+  --font-display: 'Space Grotesk', 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Inter', 'Segoe UI', Roboto, sans-serif;
+
+  // Spacing
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-48: 48px;
+  --space-64: 64px;
+  --space-96: 96px;
+  --space-128: 128px;
+
+  // Radius
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-full: 999px;
+
+  // Effects
+  --shadow-card: 0 8px 24px rgba(10, 21, 48, 0.08);
+
+  // Layout
+  --page-gutter: 96px;
+  --content-max-width: 1440px;
+}
+
+@media (max-width: 960px) {
+  :root {
+    --page-gutter: 40px;
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --page-gutter: 20px;
+  }
+}

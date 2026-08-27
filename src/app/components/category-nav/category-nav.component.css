@@ -1,0 +1,140 @@
+/* z-index must stay ABOVE the sticky header's (1030) — this host element
+   is a positioned ancestor (position + z-index create a stacking context),
+   and the mobile "Products" offcanvas panel is rendered as a direct child
+   of this component. Even though Bootstrap's offcanvas is `position: fixed`
+   with its own z-index, that only controls its stacking WITHIN this host's
+   context — the whole component (offcanvas included) still paints behind
+   anything with a higher z-index than this host itself. At the previous
+   z-index: 20, that meant the offcanvas rendered behind the header (and
+   its "Products" toggle button) instead of on top of it. */
+:host {
+  display: block;
+  position: relative;
+  z-index: 1040;
+}
+
+.category-nav {
+  background: var(--color-navy-900);
+  padding-top: var(--space-12);
+  padding-bottom: var(--space-12);
+}
+
+.category-trigger {
+  background: none;
+  border: none;
+  padding: var(--space-4) 0;
+  font-family: var(--font-body);
+  font-size: 14.5px;
+  font-weight: 500;
+  color: var(--color-white);
+}
+
+.category-trigger:hover,
+.category-trigger:focus {
+  color: var(--color-cyan-500);
+}
+
+.category-trigger[aria-expanded='true']::after {
+  transform: rotate(180deg);
+}
+
+.category-menu {
+  min-width: 260px;
+  padding: var(--space-12);
+  background-color: var(--color-white);
+  border: 1px solid var(--color-neutral-300);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+}
+
+.category-menu .dropdown-item {
+  font-size: 14px;
+  color: var(--color-navy-900);
+  padding: var(--space-4) var(--space-8);
+  border-radius: var(--radius-sm);
+}
+
+.category-menu .dropdown-item:hover,
+.category-menu .dropdown-item:focus {
+  color: var(--color-cyan-700);
+  background-color: var(--color-neutral-100);
+}
+
+.category-view-all {
+  color: var(--color-cyan-700) !important;
+}
+
+.search-field {
+  width: 340px;
+  max-width: 100%;
+}
+
+.search-field-input {
+  border: 1px solid var(--color-neutral-300);
+  border-right: none;
+  border-radius: var(--radius-full) 0 0 var(--radius-full);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--color-neutral-600);
+  background: var(--color-white);
+  padding-left: var(--space-16);
+  box-shadow: none;
+}
+
+.search-field-input::placeholder {
+  color: var(--color-neutral-600);
+  text-transform: uppercase;
+}
+
+.search-field-input:focus {
+  box-shadow: none;
+  border-color: var(--color-neutral-300);
+}
+
+.search-field-icon {
+  background: var(--color-white);
+  border: 1px solid var(--color-neutral-300);
+  border-left: none;
+  border-radius: 0 var(--radius-full) var(--radius-full) 0;
+  color: var(--color-navy-700);
+  padding-right: var(--space-16);
+}
+
+@media (max-width: 991.98px) {
+  .search-field {
+    width: 100%;
+  }
+}
+
+/* Mobile "Products" slider — kept white/light regardless of the navy nav
+   bars above, so the overlay panel and its nested dropdown-menu (subcategory
+   flyout) read as one consistent light surface. */
+.category-offcanvas {
+  width: 320px;
+  max-width: 88vw;
+  background: var(--color-white);
+  color: var(--color-neutral-900);
+}
+
+.category-offcanvas .offcanvas-header {
+  border-bottom: 1px solid var(--color-neutral-300);
+}
+
+.category-offcanvas .offcanvas-title {
+  font-family: var(--font-display);
+  color: var(--color-navy-900);
+}
+
+.category-offcanvas-list .category-trigger {
+  width: 100%;
+  padding: var(--space-12) 0;
+  border-bottom: 1px solid var(--color-neutral-100);
+  color: var(--color-neutral-900);
+}
+
+.category-offcanvas-list .category-trigger:hover,
+.category-offcanvas-list .category-trigger:focus {
+  color: var(--color-cyan-700);
+}

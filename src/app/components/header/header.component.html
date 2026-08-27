@@ -1,0 +1,46 @@
+<nav class="navbar navbar-expand-lg site-header" data-bs-theme="dark">
+  <div class="container-fluid px-4 px-lg-5">
+    <a class="navbar-brand logo" href="/" aria-label="Rychlost home">
+      <img class="logo-img" src="/images/Rychlost_Logo.png" alt="Rychlost Communication" width="101" height="60" />
+    </a>
+
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#siteNavCollapse"
+      aria-controls="siteNavCollapse"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="siteNavCollapse">
+      <ul class="navbar-nav mx-lg-auto gap-lg-4 mt-3 mt-lg-0">
+        <li class="nav-item" *ngFor="let link of navLinks">
+          <ng-container *ngIf="link.submenuTargetId; else plainNavLink">
+            <!-- Desktop: normal link. Mobile: opens the category slider instead of navigating. -->
+            <a class="nav-link site-nav-link d-none d-lg-block" [href]="link.href">{{ link.label }}</a>
+            <button
+              type="button"
+              class="nav-link site-nav-link submenu-trigger d-lg-none"
+              data-bs-toggle="offcanvas"
+              [attr.data-bs-target]="'#' + link.submenuTargetId"
+              [attr.aria-controls]="link.submenuTargetId"
+            >
+              <span>{{ link.label }}</span>
+              <svg width="8" height="14" viewBox="0 0 8 14" fill="none" aria-hidden="true">
+                <path d="M1.5 1.5l5 5.5-5 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </button>
+          </ng-container>
+          <ng-template #plainNavLink>
+            <a class="nav-link site-nav-link" [href]="link.href">{{ link.label }}</a>
+          </ng-template>
+        </li>
+      </ul>
+      <a class="btn btn--primary btn-quote mt-3 mt-lg-0" href="/contact?intent=quote">Request a Quote</a>
+    </div>
+  </div>
+</nav>

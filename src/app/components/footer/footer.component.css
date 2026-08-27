@@ -1,0 +1,96 @@
+.site-footer {
+  background: var(--color-navy-900);
+  border-top: 3px solid var(--color-cyan-500);
+  padding-top: var(--space-64);
+  padding-bottom: var(--space-32);
+}
+
+.footer-columns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-48) var(--space-32);
+  margin-bottom: var(--space-64);
+}
+
+.footer-brand {
+  flex: 1 1 260px;
+  max-width: 320px;
+}
+
+.footer-logo {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: var(--space-16);
+}
+
+.footer-logo-img {
+  height: 32px;
+  width: auto;
+}
+
+.footer-tagline {
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+}
+
+.footer-nav-col {
+  flex: 0 1 160px;
+}
+
+.footer-nav-col--products {
+  flex-basis: 220px;
+}
+
+.footer-col-heading {
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-cyan-500);
+  margin-bottom: var(--space-16);
+}
+
+.footer-link-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  margin: 0;
+}
+
+.footer-link {
+  font-size: 14.5px;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.footer-link:hover,
+.footer-link:focus {
+  color: var(--color-cyan-500);
+}
+
+.footer-contact-item {
+  font-size: 14.5px;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.6);
+  font-style: italic;
+}
+
+.footer-bottom {
+  padding-top: var(--space-24);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.footer-copyright {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .footer-columns {
+    gap: var(--space-32);
+  }
+}

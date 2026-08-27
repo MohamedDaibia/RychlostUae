@@ -1,0 +1,59 @@
+<!-- Shared category list markup — rendered once for the desktop bar, once
+     inside the mobile "Products" slider — via ngTemplateOutlet so the
+     category data and per-item dropdown only need to be written once. -->
+<ng-template #categoryItems>
+  <li class="nav-item dropdown" *ngFor="let category of categories">
+    <button
+      class="nav-link dropdown-toggle category-trigger"
+      type="button"
+      data-bs-toggle="dropdown"
+      aria-expanded="false"
+    >
+      {{ category.label }}
+    </button>
+    <ul class="dropdown-menu category-menu">
+      <li *ngFor="let item of category.items">
+        <a class="dropdown-item" href="/products?category={{ category.label }}&item={{ item }}">{{ item }}</a>
+      </li>
+      <li><hr class="dropdown-divider" /></li>
+      <li>
+        <a class="dropdown-item category-view-all fw-semibold" href="/products?category={{ category.label }}">
+          View all {{ category.label }}
+        </a>
+      </li>
+    </ul>
+  </li>
+</ng-template>
+
+<nav class="category-nav navbar navbar-expand-lg" data-bs-theme="dark" aria-label="Product categories">
+  <div class="container-fluid px-4 px-lg-5 d-flex align-items-center justify-content-between flex-wrap gap-3">
+    <ul class="navbar-nav d-none d-lg-flex flex-row flex-wrap gap-lg-4">
+      <ng-container *ngTemplateOutlet="categoryItems"></ng-container>
+    </ul>
+
+    <form class="search-field input-group" role="search" (submit)="$event.preventDefault()">
+      <input class="form-control search-field-input" type="search" placeholder="Search by product name or type" aria-label="Search products" />
+      <span class="input-group-text search-field-icon">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.5" />
+          <path d="M13 13l-2.5-2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+        </svg>
+      </span>
+    </form>
+  </div>
+</nav>
+
+<!-- Mobile "Products" slider — opened by the caret-free "Products" button
+     in <app-header>, via Bootstrap's offcanvas targeting this id. -->
+<div class="offcanvas offcanvas-end category-offcanvas" tabindex="-1" id="mobileCategoryNav" aria-labelledby="mobileCategoryNavLabel">
+  <div class="offcanvas-header">
+    <h2 class="offcanvas-title h5 mb-0" id="mobileCategoryNavLabel">Products</h2>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body d-flex flex-column">
+    <ul class="nav flex-column category-offcanvas-list">
+      <ng-container *ngTemplateOutlet="categoryItems"></ng-container>
+    </ul>
+    <a class="btn btn--primary w-100 mt-auto" href="/products">View All Products</a>
+  </div>
+</div>

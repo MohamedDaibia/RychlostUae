@@ -1,0 +1,115 @@
+.wholesale-cta-section {
+  background: var(--color-white);
+  padding-top: var(--space-64);
+  padding-bottom: var(--space-64);
+}
+
+.wholesale-cta {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-32);
+  padding: var(--space-48) var(--space-64);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(120deg, var(--color-cyan-500) 0%, var(--color-navy-700) 55%, var(--color-navy-900) 100%);
+  box-shadow: 0 20px 45px rgba(10, 21, 48, 0.22);
+}
+
+/* Bright glow accents so the banner reads as a bold, colorful moment on an
+   otherwise white page, rather than a flat gradient rectangle. */
+.wholesale-cta-glow {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.wholesale-cta-glow--cyan {
+  width: 320px;
+  height: 320px;
+  top: -140px;
+  left: -60px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.35), transparent 70%);
+}
+
+.wholesale-cta-glow--white {
+  width: 260px;
+  height: 260px;
+  bottom: -140px;
+  right: 10%;
+  background: radial-gradient(circle, rgba(12, 225, 243, 0.4), transparent 70%);
+}
+
+.wholesale-cta-copy {
+  position: relative;
+  z-index: 1;
+  max-width: 620px;
+}
+
+.wholesale-cta-eyebrow {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-navy-900);
+  background: var(--color-white);
+  padding: var(--space-4) var(--space-12);
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-16);
+}
+
+.wholesale-cta-heading {
+  font-family: var(--font-display);
+  font-size: 27px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--color-white);
+  margin-bottom: var(--space-12);
+}
+
+.wholesale-cta-text {
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0;
+}
+
+.wholesale-cta-button {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  white-space: nowrap;
+  background: var(--color-white);
+  color: var(--color-navy-900);
+  border-color: transparent;
+}
+
+.wholesale-cta-button:hover {
+  background: var(--color-navy-900);
+  color: var(--color-white);
+  opacity: 1;
+}
+
+@media (max-width: 991.98px) {
+  .wholesale-cta {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: var(--space-32);
+  }
+
+  .wholesale-cta-button {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .wholesale-cta-heading {
+    font-size: 22px;
+  }
+}
