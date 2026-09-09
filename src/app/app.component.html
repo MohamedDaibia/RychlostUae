@@ -1,18 +1,15 @@
-<app-header></app-header>
-<app-category-nav></app-category-nav>
-<app-hero></app-hero>
-<app-trust-strip></app-trust-strip>
-<app-brand-video></app-brand-video>
-<app-product-categories></app-product-categories>
-<app-why-rychlost></app-why-rychlost>
-<app-wholesale-cta></app-wholesale-cta>
-<app-footer></app-footer>
+@if (!isAdminRoute()) {
+  <app-header></app-header>
+  <app-category-nav></app-category-nav>
+}
 
 <!--
-  Full homepage is now built (Header → Hero → Trust Strip → Brand Video →
-  Product Categories → Why Rychlost → Wholesale CTA → Footer).
-  <router-outlet /> is wired up for the pages that come after this slice
-  (About, Products, Wholesale & Trade, Clients, Contact) — none of those
-  are built yet.
+  Header, Category Nav, and Footer stay mounted here across every storefront
+  route — Home, Products, About, Wholesale & Trade, Clients, Contact (see
+  app.routes.ts). The /admin routes (login + CMS) render standalone.
 -->
 <router-outlet></router-outlet>
+
+@if (!isAdminRoute()) {
+  <app-footer></app-footer>
+}

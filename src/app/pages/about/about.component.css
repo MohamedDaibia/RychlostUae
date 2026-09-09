@@ -1,0 +1,118 @@
+.about-intro {
+  padding-top: var(--space-64);
+  padding-bottom: var(--space-48);
+  background: var(--color-white);
+}
+
+.about-eyebrow {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-cyan-700);
+  margin-bottom: var(--space-16);
+}
+
+.about-heading {
+  font-family: var(--font-display);
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--color-navy-900);
+  max-width: 780px;
+  text-wrap: balance;
+  margin-bottom: var(--space-16);
+}
+
+.about-subhead {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--color-neutral-600);
+  max-width: 640px;
+  margin: 0;
+}
+
+.about-story {
+  padding-top: var(--space-16);
+  padding-bottom: var(--space-64);
+  background: var(--color-white);
+}
+
+.about-story-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-48);
+  align-items: center;
+}
+
+.about-section-heading {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-navy-900);
+  margin-bottom: var(--space-16);
+}
+
+.about-story-copy p {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--color-neutral-600);
+  margin-bottom: var(--space-16);
+}
+
+.about-story-copy p:last-child {
+  margin-bottom: 0;
+}
+
+.about-story-media {
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-lg);
+  background: var(--color-neutral-100);
+  overflow: hidden;
+}
+
+.about-story-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.about-cta {
+  padding-top: var(--space-64);
+  padding-bottom: var(--space-64);
+  background: var(--color-neutral-100);
+}
+
+.about-cta-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-24);
+}
+
+.about-cta-heading {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-navy-900);
+  margin-bottom: var(--space-8);
+}
+
+.about-cta-text {
+  font-size: 15px;
+  color: var(--color-neutral-600);
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .about-story-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-heading {
+    font-size: 28px;
+  }
+}

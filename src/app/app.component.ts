@@ -1,21 +1,25 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, signal } from '@angular/core';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 import { HeaderComponent } from './components/header/header.component';
 import { CategoryNavComponent } from './components/category-nav/category-nav.component';
-import { HeroComponent } from './components/hero/hero.component';
-import { TrustStripComponent } from './components/trust-strip/trust-strip.component';
-import { BrandVideoComponent } from './components/brand-video/brand-video.component';
-import { ProductCategoriesComponent } from './components/product-categories/product-categories.component';
-import { WhyRychlostComponent } from './components/why-rychlost/why-rychlost.component';
-import { WholesaleCtaComponent } from './components/wholesale-cta/wholesale-cta.component';
 import { FooterComponent } from './components/footer/footer.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent, CategoryNavComponent, HeroComponent, TrustStripComponent, BrandVideoComponent, ProductCategoriesComponent, WhyRychlostComponent, WholesaleCtaComponent, FooterComponent],
+  imports: [RouterOutlet, HeaderComponent, CategoryNavComponent, FooterComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent {}
+export class AppComponent {
+  // The admin area (login + CMS) renders without the storefront header/nav/footer.
+  readonly isAdminRoute = signal(false);
+
+  constructor(router: Router) {
+    router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe((event) => {
+      this.isAdminRoute.set((event as NavigationEnd).urlAfterRedirects.startsWith('/admin'));
+    });
+  }
+}

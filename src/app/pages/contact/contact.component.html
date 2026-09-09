@@ -1,0 +1,96 @@
+<section class="contact-intro">
+  <div class="container">
+    <p class="contact-eyebrow">Contact</p>
+    <h1 class="contact-heading">Let's talk stock, pricing, or your next project</h1>
+    <p class="contact-subhead">
+      Send us a message and our team will get back to you — whether it's a quote, a stock check, or a
+      general question.
+    </p>
+  </div>
+</section>
+
+<section class="contact-body">
+  <div class="container">
+    <div class="contact-layout">
+      <div class="contact-form-panel">
+        <form class="contact-form" *ngIf="!submitted(); else successPanel" (submit)="onSubmit($event)">
+          <div class="form-row form-row--split">
+            <label class="form-field">
+              <span class="form-label">Name</span>
+              <input type="text" name="name" required placeholder="Your full name" />
+            </label>
+            <label class="form-field">
+              <span class="form-label">Company</span>
+              <input type="text" name="company" placeholder="Company (optional)" />
+            </label>
+          </div>
+
+          <div class="form-row form-row--split">
+            <label class="form-field">
+              <span class="form-label">Email</span>
+              <input type="email" name="email" required placeholder="you@company.com" />
+            </label>
+            <label class="form-field">
+              <span class="form-label">Phone</span>
+              <input type="tel" name="phone" placeholder="Phone (optional)" />
+            </label>
+          </div>
+
+          <label class="form-field">
+            <span class="form-label">Reason for contact</span>
+            <select name="reason" [value]="defaultReason()">
+              <option *ngFor="let reason of reasons" [value]="reason">{{ reason }}</option>
+            </select>
+          </label>
+
+          <label class="form-field">
+            <span class="form-label">Message</span>
+            <textarea name="message" rows="5" required placeholder="What can we help with?" [value]="defaultMessage()"></textarea>
+          </label>
+
+          <button type="submit" class="btn btn--primary contact-submit">Send Message</button>
+        </form>
+
+        <ng-template #successPanel>
+          <div class="contact-success">
+            <h2 class="contact-success-heading">Message received</h2>
+            <p>Thanks for reaching out — our team will get back to you shortly.</p>
+            <button type="button" class="btn btn--secondary" (click)="sendAnother()">Send another message</button>
+          </div>
+        </ng-template>
+      </div>
+
+      <aside class="contact-details">
+        <div class="contact-card">
+          <h2 class="contact-card-heading">Reach us directly</h2>
+          <ul class="contact-card-list">
+            <li>
+              <span class="contact-card-label">Phone</span>
+              <span class="contact-card-value">[Phone number]</span>
+            </li>
+            <li>
+              <span class="contact-card-label">Email</span>
+              <span class="contact-card-value">[Email address]</span>
+            </li>
+            <li>
+              <span class="contact-card-label">Address</span>
+              <span class="contact-card-value">[Office address, UAE]</span>
+            </li>
+            <li>
+              <span class="contact-card-label">Hours</span>
+              <span class="contact-card-value">[Business hours]</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="contact-map" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2C8 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3-7-7-7z" stroke="#A6B0C3" stroke-width="1.6" stroke-linejoin="round" />
+            <circle cx="12" cy="9" r="2.4" stroke="#A6B0C3" stroke-width="1.6" />
+          </svg>
+          <span>Map — add once the office address is confirmed</span>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>

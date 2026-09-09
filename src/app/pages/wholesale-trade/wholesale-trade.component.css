@@ -1,0 +1,183 @@
+.wholesale-intro {
+  padding-top: var(--space-64);
+  padding-bottom: var(--space-48);
+  background: var(--color-white);
+}
+
+.wholesale-eyebrow {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-cyan-700);
+  margin-bottom: var(--space-16);
+}
+
+.wholesale-heading {
+  font-family: var(--font-display);
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--color-navy-900);
+  max-width: 780px;
+  text-wrap: balance;
+  margin-bottom: var(--space-16);
+}
+
+.wholesale-subhead {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--color-neutral-600);
+  max-width: 640px;
+  margin: 0;
+}
+
+.wholesale-section-heading {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-navy-900);
+  margin-bottom: var(--space-24);
+}
+
+.wholesale-who {
+  padding-top: var(--space-16);
+  padding-bottom: var(--space-64);
+  background: var(--color-white);
+}
+
+.wholesale-who-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-24);
+}
+
+.wholesale-who-card {
+  padding: var(--space-24);
+  border: 1px solid var(--color-neutral-300);
+  border-radius: var(--radius-lg);
+}
+
+.wholesale-who-card h3 {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--color-navy-900);
+  margin-bottom: var(--space-8);
+}
+
+.wholesale-who-card p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-neutral-600);
+  margin: 0;
+}
+
+.wholesale-benefits {
+  padding-top: var(--space-64);
+  padding-bottom: var(--space-64);
+  background: var(--color-neutral-100);
+}
+
+.wholesale-benefits-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-48);
+  align-items: center;
+}
+
+.wholesale-benefits-list {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+}
+
+.wholesale-benefits-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-12);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--color-neutral-600);
+}
+
+.wholesale-benefits-list strong {
+  color: var(--color-navy-900);
+}
+
+.wholesale-benefit-icon {
+  flex: none;
+  color: var(--color-cyan-700);
+  margin-top: 2px;
+}
+
+.wholesale-benefits-media {
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-lg);
+  background: var(--color-white);
+  overflow: hidden;
+}
+
+.wholesale-benefits-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.wholesale-cta-block {
+  padding-top: var(--space-64);
+  padding-bottom: var(--space-64);
+  background: var(--color-white);
+}
+
+.wholesale-cta-block-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-24);
+  padding: var(--space-48);
+  background: var(--color-navy-900);
+  border-radius: var(--radius-lg);
+  color: var(--color-white);
+}
+
+.wholesale-cta-block-inner h2 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: var(--space-8);
+}
+
+.wholesale-cta-block-inner p {
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.72);
+  margin: 0;
+  max-width: 480px;
+}
+
+@media (max-width: 960px) {
+  .wholesale-who-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .wholesale-benefits-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .wholesale-heading {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 560px) {
+  .wholesale-who-grid {
+    grid-template-columns: 1fr;
+  }
+}

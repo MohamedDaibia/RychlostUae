@@ -1,0 +1,88 @@
+<ng-container *ngIf="product() as p; else notFound">
+  <section class="detail-body">
+    <div class="container">
+      <nav class="detail-breadcrumb" aria-label="Breadcrumb">
+        <a routerLink="/">Home</a>
+        <span aria-hidden="true">/</span>
+        <a routerLink="/products">Products</a>
+        <span aria-hidden="true">/</span>
+        <a [routerLink]="['/products']" [queryParams]="{ category: p.category }">{{ p.category }}</a>
+        <span aria-hidden="true">/</span>
+        <span class="detail-breadcrumb-current">{{ p.name }}</span>
+      </nav>
+
+      <div class="detail-grid">
+        <div class="detail-media">
+          <!-- Dummy placeholder — swap for real product photography once available. -->
+          <img src="/images/product-placeholder.svg" alt="" class="detail-img" />
+        </div>
+
+        <div class="detail-info">
+          <span class="detail-type">{{ p.type }}</span>
+          <h1 class="detail-heading">{{ p.name }}</h1>
+          <p class="detail-desc">{{ p.description }}</p>
+
+          <dl class="detail-meta">
+            <div class="detail-meta-row">
+              <dt>Category</dt>
+              <dd>{{ p.category }}</dd>
+            </div>
+            <div class="detail-meta-row">
+              <dt>Type</dt>
+              <dd>{{ p.type }}</dd>
+            </div>
+          </dl>
+
+          <!-- Rychlost supplies product only (no installation, no online checkout —
+               see business-brief.md), so the primary action is a quote enquiry
+               rather than an add-to-cart / price display. -->
+          <p class="detail-note">
+            Pricing is quoted per order for wholesale and retail accounts. Get in touch with the
+            product name and quantity you need for a fast quote.
+          </p>
+
+          <div class="detail-actions">
+            <a
+              class="btn btn--primary"
+              [routerLink]="['/contact']"
+              [queryParams]="{ intent: 'quote', product: p.name }"
+            >
+              Request a Quote
+            </a>
+            <a class="btn btn--secondary" routerLink="/products">Back to All Products</a>
+          </div>
+        </div>
+      </div>
+
+      <section class="detail-related" *ngIf="relatedProducts().length">
+        <h2 class="detail-related-heading">You may also need</h2>
+        <div class="detail-related-grid">
+          <a
+            class="related-card"
+            *ngFor="let related of relatedProducts()"
+            [routerLink]="['/products', related.slug]"
+          >
+            <div class="related-card-media">
+              <img src="/images/product-placeholder.svg" alt="" class="related-card-img" />
+            </div>
+            <span class="related-card-type">{{ related.type }}</span>
+            <h3 class="related-card-name">{{ related.name }}</h3>
+          </a>
+        </div>
+      </section>
+    </div>
+  </section>
+</ng-container>
+
+<ng-template #notFound>
+  <section class="detail-body detail-not-found">
+    <div class="container">
+      <h1 class="detail-heading">Product not found</h1>
+      <p class="detail-desc">
+        We couldn't find a product at this link. It may have been renamed or removed from the
+        catalog.
+      </p>
+      <a class="btn btn--primary" routerLink="/products">Browse All Products</a>
+    </div>
+  </section>
+</ng-template>

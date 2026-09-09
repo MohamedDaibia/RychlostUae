@@ -1,0 +1,91 @@
+<section class="products-body">
+  <div class="container">
+    <!-- Kept as a visually-hidden h1 (Bootstrap's .visually-hidden) now that the
+         visible hero band is gone, so the page still has one real heading. -->
+    <h1 class="visually-hidden">Products</h1>
+
+    <div class="products-toolbar">
+      <span class="products-count"><strong>{{ filteredProducts().length }}</strong> of {{ products.length }} products</span>
+
+      <button
+        type="button"
+        class="products-rail-toggle"
+        (click)="toggleRail()"
+        [attr.aria-expanded]="railOpen()"
+        aria-controls="productsRail"
+      >
+        Filter &amp; sort
+      </button>
+
+      <div class="products-search">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.5" />
+          <path d="M13 13l-2.5-2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+        </svg>
+        <input
+          type="search"
+          #searchInputEl
+          [value]="searchTerm()"
+          (input)="onSearchInput(searchInputEl.value)"
+          placeholder="Search by product name or type"
+          aria-label="Search products"
+        />
+      </div>
+    </div>
+
+    <div class="products-layout">
+      <aside class="products-rail" id="productsRail" [class.is-open]="railOpen()">
+        <div class="rail-group">
+          <h2 class="rail-heading">Sort by</h2>
+          <select class="rail-sort" #sortSelectEl [value]="sortKey()" (change)="onSortChange(sortSelectEl.value)">
+            <option value="name-asc">Name, A &rarr; Z</option>
+            <option value="name-desc">Name, Z &rarr; A</option>
+            <option value="type-asc">Type, A &rarr; Z</option>
+          </select>
+        </div>
+
+        <div class="rail-group" *ngFor="let group of categoryGroups">
+          <h2 class="rail-heading">{{ group.category }}</h2>
+          <ul class="rail-type-list">
+            <li *ngFor="let type of group.types">
+              <label class="rail-type-row">
+                <input type="checkbox" [checked]="isTypeActive(type)" (change)="toggleType(type)" />
+                <span class="rail-type-name">{{ type }}</span>
+                <span class="rail-type-count">{{ countFor(type) }}</span>
+              </label>
+            </li>
+          </ul>
+        </div>
+
+        <button type="button" class="rail-clear" (click)="clearFilters()">Clear filters</button>
+      </aside>
+
+      <div class="products-grid">
+        <!-- Clicking any product card opens its details page (ProductDetailComponent
+             at /products/:slug). The whole card is clickable via a "stretched link"
+             — an absolutely-positioned anchor sibling covering the card (see
+             .product-card-link in products.component.css) — rather than making
+             <article> itself an <a>, so the card keeps its current semantics. -->
+        <article class="product-card" *ngFor="let product of filteredProducts()">
+          <a
+            class="product-card-link"
+            [routerLink]="['/products', product.slug]"
+            [attr.aria-label]="'View details for ' + product.name"
+          ></a>
+          <div class="product-card-media">
+            <!-- Dummy placeholder — swap for real product photography once available. -->
+            <img class="product-card-img" src="/images/product-placeholder.svg" alt="" />
+          </div>
+          <span class="product-card-type">{{ product.type }}</span>
+          <h3 class="product-card-name">{{ product.name }}</h3>
+          <p class="product-card-desc">{{ product.description }}</p>
+        </article>
+
+        <div class="products-empty" *ngIf="filteredProducts().length === 0">
+          <p class="products-empty-title">No products match those filters</p>
+          <p>Try clearing a filter or searching a different term.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -26,7 +26,6 @@ export class HeaderComponent {
     { label: 'About', href: '/about' },
     { label: 'Products', href: '/products', submenuTargetId: 'mobileCategoryNav' },
     { label: 'Wholesale & Trade', href: '/wholesale-trade' },
-    { label: 'Clients', href: '/clients' },
     { label: 'Contact', href: '/contact' },
   ];
 }

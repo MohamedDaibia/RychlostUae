@@ -1,0 +1,217 @@
+.contact-intro {
+  padding-top: var(--space-64);
+  padding-bottom: var(--space-48);
+  background: var(--color-white);
+}
+
+.contact-eyebrow {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-cyan-700);
+  margin-bottom: var(--space-16);
+}
+
+.contact-heading {
+  font-family: var(--font-display);
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--color-navy-900);
+  max-width: 700px;
+  text-wrap: balance;
+  margin-bottom: var(--space-16);
+}
+
+.contact-subhead {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--color-neutral-600);
+  max-width: 600px;
+  margin: 0;
+}
+
+.contact-body {
+  padding-top: var(--space-16);
+  padding-bottom: var(--space-96);
+  background: var(--color-white);
+}
+
+.contact-layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: var(--space-48);
+  align-items: start;
+}
+
+/* ---------- form ---------- */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+}
+
+.form-row {
+  display: flex;
+  gap: var(--space-16);
+}
+
+.form-row--split .form-field {
+  flex: 1 1 0;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  flex: 1 1 auto;
+}
+
+.form-label {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-neutral-600);
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+  font-family: var(--font-body);
+  font-size: 14.5px;
+  color: var(--color-neutral-900);
+  padding: 10px 14px;
+  border: 1px solid var(--color-neutral-300);
+  border-radius: var(--radius-sm);
+  background: var(--color-white);
+}
+
+.form-field textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.form-field input::placeholder,
+.form-field textarea::placeholder {
+  color: var(--color-neutral-600);
+}
+
+.form-field input:focus-visible,
+.form-field select:focus-visible,
+.form-field textarea:focus-visible {
+  outline: 2px solid var(--color-cyan-700);
+  outline-offset: 2px;
+}
+
+.contact-submit {
+  align-self: flex-start;
+  margin-top: var(--space-8);
+}
+
+/* ---------- success ---------- */
+.contact-success {
+  padding: var(--space-32);
+  border: 1px solid var(--color-neutral-300);
+  border-radius: var(--radius-lg);
+  background: var(--color-neutral-100);
+}
+
+.contact-success-heading {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-navy-900);
+  margin-bottom: var(--space-8);
+}
+
+.contact-success p {
+  font-size: 14.5px;
+  color: var(--color-neutral-600);
+  margin-bottom: var(--space-16);
+}
+
+/* ---------- details column ---------- */
+.contact-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+}
+
+.contact-card {
+  padding: var(--space-24);
+  border: 1px solid var(--color-neutral-300);
+  border-radius: var(--radius-lg);
+  background: var(--color-neutral-100);
+}
+
+.contact-card-heading {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--color-navy-900);
+  margin-bottom: var(--space-16);
+}
+
+.contact-card-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+
+.contact-card-list li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.contact-card-label {
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-neutral-600);
+}
+
+.contact-card-value {
+  font-size: 14px;
+  color: var(--color-navy-900);
+}
+
+.contact-map {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+  text-align: center;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-lg);
+  background: var(--color-neutral-100);
+  border: 1px dashed var(--color-neutral-300);
+  padding: var(--space-16);
+  font-size: 12px;
+  color: var(--color-neutral-600);
+}
+
+@media (max-width: 860px) {
+  .contact-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .form-row {
+    flex-direction: column;
+  }
+
+  .contact-heading {
+    font-size: 28px;
+  }
+}
