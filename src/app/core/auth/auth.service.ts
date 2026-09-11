@@ -30,8 +30,9 @@ export class AuthService {
   readonly isAuthenticated = signal(this.hasValidToken());
 
   private readonly apiBase = environment.apiBaseUrl;
-
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    console.log('API Base URL:', this.apiBase);
+  }
 
   login(credentials: LoginRequest): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiBase}/admin/login`, credentials).pipe(

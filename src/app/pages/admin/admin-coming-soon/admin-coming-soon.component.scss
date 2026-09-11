@@ -1,0 +1,14 @@
+.admin-coming-soon {
+  h1 {
+    font-family: var(--font-display, 'Space Grotesk', 'Segoe UI', Roboto, sans-serif);
+    font-size: 1.75rem;
+    color: var(--color-navy-900, #0a1530);
+    margin: 0 0 8px;
+  }
+
+  p {
+    font-family: var(--font-body, 'Inter', 'Segoe UI', Roboto, sans-serif);
+    color: var(--color-neutral-600, #5b6472);
+    margin: 0;
+  }
+}

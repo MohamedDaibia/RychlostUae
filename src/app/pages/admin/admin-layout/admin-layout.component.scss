@@ -1,0 +1,118 @@
+.admin-shell {
+  display: flex;
+  min-height: 100vh;
+  background: var(--color-neutral-100, #f5f7fa);
+}
+
+.admin-sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 260px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  background: var(--color-navy-900, #0a1530);
+
+  &__brand {
+    display: flex;
+    align-items: center;
+    padding: 24px 24px 20px;
+  }
+
+  &__logo {
+    height: 36px;
+    width: auto;
+  }
+
+  &__nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px 12px;
+  }
+
+  &__link,
+  &__logout {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 10px 12px;
+    border: none;
+    border-radius: var(--radius-sm, 8px);
+    background: transparent;
+    color: rgba(255, 255, 255, 0.75);
+    font-family: var(--font-body, 'Inter', 'Segoe UI', Roboto, sans-serif);
+    font-size: 14px;
+    font-weight: 500;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover,
+    &:focus-visible {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--color-white, #fff);
+    }
+
+    &.active {
+      background: rgba(12, 225, 243, 0.12);
+      color: var(--color-cyan-500, #0ce1f3);
+    }
+  }
+
+  &__icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &__logout {
+    margin: auto 12px 20px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 0;
+  }
+}
+
+.admin-content {
+  flex: 1;
+  min-width: 0;
+  padding: 32px;
+}
+
+@media (max-width: 768px) {
+  .admin-sidebar {
+    width: 72px;
+
+    &__brand {
+      justify-content: center;
+      padding: 20px 0;
+    }
+
+    &__logo {
+      height: 28px;
+    }
+
+    &__label {
+      display: none;
+    }
+
+    &__link,
+    &__logout {
+      justify-content: center;
+      padding: 12px;
+    }
+  }
+
+  .admin-content {
+    padding: 20px;
+  }
+}

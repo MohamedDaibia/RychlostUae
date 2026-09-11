@@ -3,20 +3,24 @@
     <div class="row align-items-center gy-5">
       <div class="col-lg-6">
         <div class="brand-video-copy">
-          <p class="brand-video-eyebrow">Watch: Who We Are</p>
+          <p class="brand-video-eyebrow">{{ heading() }}</p>
           <h2 class="brand-video-heading">
             The <span class="brand-video-heading-accent">trusted</span> supply partner behind UAE's networks.
           </h2>
-          <p class="brand-video-text">
-            From structured cabling to telecom hardware, Rychlost stocks tested, proven products so your
-            team can build with confidence without compromise. See how we keep networking and telecom
-            projects across the UAE moving forward.
-          </p>
+          <p class="brand-video-text">{{ body() }}</p>
           <a class="btn btn--primary btn--lg" href="/products">Explore Our Products</a>
         </div>
       </div>
 
       <div class="col-lg-6">
+        <p class="brand-video-watch-label">
+          <span class="brand-video-watch-icon" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M4 2.5v9l8-4.5-8-4.5z" fill="currentColor" />
+            </svg>
+          </span>
+          Watch Video
+        </p>
         <div class="brand-video-player">
           <video
             class="brand-video-el"

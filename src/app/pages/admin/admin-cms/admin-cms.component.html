@@ -1,4 +1,236 @@
-<div class="admin-cms">
+<div class="admin-home">
+  <div class="row">
+    <div class="col-sm-6">
+ <section class="content-editor">
+    <h2 class="content-editor__title">Who We Are</h2>
+    <p class="content-editor__hint">
+      Edit the "Who We Are" heading and text shown next to the video on the home page.
+    </p>
+
+    @if (whoWeAreLoading()) {
+      <p class="content-editor__status">Loading current content…</p>
+    } @else {
+      <form [formGroup]="whoWeAreForm" (ngSubmit)="saveWhoWeAre()" novalidate>
+        <div class="content-editor__field">
+          <label for="whoWeAreHeading">Heading</label>
+          <input
+            id="whoWeAreHeading"
+            type="text"
+            formControlName="heading"
+            [class.is-invalid]="heading.invalid && heading.touched"
+          />
+          @if (heading.invalid && heading.touched) {
+            <p class="content-editor__field-error">Heading is required.</p>
+          }
+        </div>
+
+        <div class="content-editor__field">
+          <label for="whoWeAreBody">Body text</label>
+          <textarea
+            id="whoWeAreBody"
+            rows="5"
+            formControlName="body"
+            [class.is-invalid]="body.invalid && body.touched"
+          ></textarea>
+          @if (body.invalid && body.touched) {
+            <p class="content-editor__field-error">Body text is required.</p>
+          }
+        </div>
+
+        @if (whoWeAreError()) {
+          <p class="content-editor__banner content-editor__banner--error">{{ whoWeAreError() }}</p>
+        }
+        @if (whoWeAreSaved()) {
+          <p class="content-editor__banner content-editor__banner--success">
+            Saved — the home page now shows this text.
+          </p>
+        }
+
+        <button type="submit" class="content-editor__save" [disabled]="whoWeAreSaving()">
+          {{ whoWeAreSaving() ? 'Saving…' : 'Save changes' }}
+        </button>
+      </form>
+    }
+  </section>
+    </div>
+    <div class="col-sm-6">
+  <section class="content-editor">
+    <h2 class="content-editor__title">Contact Our Customer Support</h2>
+    <p class="content-editor__hint">
+      This is the banner shown near the bottom of the home page. The "Contact our customer support" heading
+      and the "Contact Us" button are fixed and can't be changed here. The label above the heading and the
+      paragraph below it can be.
+    </p>
+
+    @if (wholesaleCtaLoading()) {
+      <p class="content-editor__status">Loading current content…</p>
+    } @else {
+      <form [formGroup]="wholesaleCtaForm" (ngSubmit)="saveWholesaleCta()" novalidate>
+        <div class="content-editor__field">
+          <label for="wholesaleCtaEyebrow">Label</label>
+          <input
+            id="wholesaleCtaEyebrow"
+            type="text"
+            formControlName="eyebrow"
+            [class.is-invalid]="wholesaleCtaEyebrow.invalid && wholesaleCtaEyebrow.touched"
+          />
+          @if (wholesaleCtaEyebrow.invalid && wholesaleCtaEyebrow.touched) {
+            <p class="content-editor__field-error">Label is required.</p>
+          }
+        </div>
+
+        <div class="content-editor__field">
+          <label for="wholesaleCtaText">Text</label>
+          <textarea
+            id="wholesaleCtaText"
+            rows="4"
+            formControlName="text"
+            [class.is-invalid]="wholesaleCtaText.invalid && wholesaleCtaText.touched"
+          ></textarea>
+          @if (wholesaleCtaText.invalid && wholesaleCtaText.touched) {
+            <p class="content-editor__field-error">Text is required.</p>
+          }
+        </div>
+
+        @if (wholesaleCtaError()) {
+          <p class="content-editor__banner content-editor__banner--error">{{ wholesaleCtaError() }}</p>
+        }
+        @if (wholesaleCtaSaved()) {
+          <p class="content-editor__banner content-editor__banner--success">
+            Saved — the home page now shows this content.
+          </p>
+        }
+
+        <button type="submit" class="content-editor__save" [disabled]="wholesaleCtaSaving()">
+          {{ wholesaleCtaSaving() ? 'Saving…' : 'Save changes' }}
+        </button>
+      </form>
+    }
+  </section>
+  </div>
   <h1>{{ message() }}</h1>
-  <button type="button" class="admin-cms__logout" (click)="logout()">Logout</button>
+
+ 
+
+  <section class="content-editor content-editor--wide">
+    <h2 class="content-editor__title">Why Rychlost</h2>
+    <p class="content-editor__hint">
+      The "Why Rychlost" label above this section is fixed and can't be changed here.
+    </p>
+
+    @if (whyRychlostLoading()) {
+      <p class="content-editor__status">Loading current content…</p>
+    } @else {
+      <form [formGroup]="whyRychlostForm" (ngSubmit)="saveWhyRychlost()" novalidate>
+        <div class="content-editor__grid">
+          <!-- Left half: sub-heading + checklist shown on the left side of
+               the home page's Why Rychlost section. -->
+          <div class="content-editor__col">
+            <h3 class="content-editor__subtitle">Sub-heading &amp; checklist</h3>
+
+            <div class="content-editor__field">
+              <label for="whyRychlostHeading">Sub-heading</label>
+              <input
+                id="whyRychlostHeading"
+                type="text"
+                formControlName="heading"
+                [class.is-invalid]="whyRychlostHeading.invalid && whyRychlostHeading.touched"
+              />
+              @if (whyRychlostHeading.invalid && whyRychlostHeading.touched) {
+                <p class="content-editor__field-error">Sub-heading is required.</p>
+              }
+            </div>
+
+            <div formArrayName="items">
+              @for (itemGroup of whyRychlostItems.controls; track $index) {
+                <div class="content-editor__item" [formGroupName]="$index">
+                  <p class="content-editor__item-label">Checklist item {{ $index + 1 }}</p>
+
+                  <div class="content-editor__field">
+                    <label [for]="'whyRychlostItemTitle' + $index">Title</label>
+                    <input
+                      [id]="'whyRychlostItemTitle' + $index"
+                      type="text"
+                      formControlName="title"
+                      [class.is-invalid]="itemGroup.get('title')?.invalid && itemGroup.get('title')?.touched"
+                    />
+                    @if (itemGroup.get('title')?.invalid && itemGroup.get('title')?.touched) {
+                      <p class="content-editor__field-error">Title is required.</p>
+                    }
+                  </div>
+
+                  <div class="content-editor__field">
+                    <label [for]="'whyRychlostItemDescription' + $index">Description</label>
+                    <textarea
+                      [id]="'whyRychlostItemDescription' + $index"
+                      rows="3"
+                      formControlName="description"
+                      [class.is-invalid]="itemGroup.get('description')?.invalid && itemGroup.get('description')?.touched"
+                    ></textarea>
+                    @if (itemGroup.get('description')?.invalid && itemGroup.get('description')?.touched) {
+                      <p class="content-editor__field-error">Description is required.</p>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+
+          <!-- Right half: the testimonial flip card shown on the right side
+               of the home page's Why Rychlost section. Only the BACK face is
+               editable here — its content (quote) and owner name. The front
+               face and the "Founder, Rychlost" role are fixed. -->
+          <div class="content-editor__col">
+            <h3 class="content-editor__subtitle">Testimonial card (back side)</h3>
+            <p class="content-editor__hint">
+              This is the card shown on the right of the checklist. Only the back of the card — the quote
+              and the owner name — can be edited here. The front side and the "Founder, Rychlost" role stay
+              fixed.
+            </p>
+
+            <div class="content-editor__field">
+              <label for="whyRychlostTestimonialOwnerName">Owner name</label>
+              <input
+                id="whyRychlostTestimonialOwnerName"
+                type="text"
+                formControlName="testimonialOwnerName"
+                [class.is-invalid]="testimonialOwnerName.invalid && testimonialOwnerName.touched"
+              />
+              @if (testimonialOwnerName.invalid && testimonialOwnerName.touched) {
+                <p class="content-editor__field-error">Owner name is required.</p>
+              }
+            </div>
+
+            <div class="content-editor__field">
+              <label for="whyRychlostTestimonialQuote">Content</label>
+              <textarea
+                id="whyRychlostTestimonialQuote"
+                rows="6"
+                formControlName="testimonialQuote"
+                [class.is-invalid]="testimonialQuote.invalid && testimonialQuote.touched"
+              ></textarea>
+              @if (testimonialQuote.invalid && testimonialQuote.touched) {
+                <p class="content-editor__field-error">Content is required.</p>
+              }
+            </div>
+          </div>
+        </div>
+
+        @if (whyRychlostError()) {
+          <p class="content-editor__banner content-editor__banner--error">{{ whyRychlostError() }}</p>
+        }
+        @if (whyRychlostSaved()) {
+          <p class="content-editor__banner content-editor__banner--success">
+            Saved — the home page now shows this content.
+          </p>
+        }
+
+        <button type="submit" class="content-editor__save" [disabled]="whyRychlostSaving()">
+          {{ whyRychlostSaving() ? 'Saving…' : 'Save changes' }}
+        </button>
+      </form>
+    }
+  </section>
+
+ 
 </div>

@@ -1,0 +1,91 @@
+<div class="admin-shell">
+  <aside class="admin-sidebar">
+    <div class="admin-sidebar__brand">
+      <img
+        class="admin-sidebar__logo"
+        src="/images/Rychlost Logo White.png"
+        alt="Rychlost Communication"
+      />
+    </div>
+
+    <nav class="admin-sidebar__nav" aria-label="Admin navigation">
+      <a
+        class="admin-sidebar__link"
+        routerLink="/admin/cms"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <span class="admin-sidebar__icon">
+          <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M3 9.5L10 3l7 6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M5 8.5V16a1 1 0 0 0 1 1h3v-4.5h2V17h3a1 1 0 0 0 1-1V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </span>
+        <span class="admin-sidebar__label">Home page</span>
+      </a>
+
+      <a class="admin-sidebar__link" routerLink="/admin/cms/products" routerLinkActive="active">
+        <span class="admin-sidebar__icon">
+          <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M10 2.5l7 3.5v8L10 17.5 3 14V6l7-3.5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+            <path d="M3 6l7 3.5 7-3.5M10 9.5V17.5" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+          </svg>
+        </span>
+        <span class="admin-sidebar__label">Products</span>
+      </a>
+
+      <a class="admin-sidebar__link" routerLink="/admin/cms/settings" routerLinkActive="active">
+        <span class="admin-sidebar__icon">
+          <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="10" cy="10" r="2.5" stroke="currentColor" stroke-width="1.5" />
+            <path
+              d="M10 2.5v2M10 15.5v2M17.5 10h-2M4.5 10h-2M15.3 4.7l-1.4 1.4M6.1 13.9l-1.4 1.4M15.3 15.3l-1.4-1.4M6.1 6.1L4.7 4.7"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+            />
+          </svg>
+        </span>
+        <span class="admin-sidebar__label">Settings</span>
+      </a>
+
+      <a class="admin-sidebar__link" routerLink="/admin/cms/stocks" routerLinkActive="active">
+        <span class="admin-sidebar__icon">
+          <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M4 17V10M10 17V3M16 17v-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+        </span>
+        <span class="admin-sidebar__label">Stocks</span>
+      </a>
+
+      <a class="admin-sidebar__link" routerLink="/admin/cms/billing" routerLinkActive="active">
+        <span class="admin-sidebar__icon">
+          <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path
+              d="M5 2.5h7l3 3V17a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5v-14a.5.5 0 0 1 .5-.5z"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linejoin="round"
+            />
+            <path d="M7.5 8h5M7.5 11h5M7.5 14h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+        </span>
+        <span class="admin-sidebar__label">Billing</span>
+      </a>
+    </nav>
+
+    <button type="button" class="admin-sidebar__logout" (click)="logout()">
+      <span class="admin-sidebar__icon">
+        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M8 2.5H4.5a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M13 6.5l4 3.5-4 3.5M17 10H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </span>
+      <span class="admin-sidebar__label">Logout</span>
+    </button>
+  </aside>
+
+  <main class="admin-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

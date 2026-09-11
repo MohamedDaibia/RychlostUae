@@ -39,6 +39,26 @@
   margin-bottom: var(--space-32);
 }
 
+.brand-video-watch-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-cyan-700);
+  margin-bottom: var(--space-16);
+}
+
+.brand-video-watch-icon {
+  display: inline-flex;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
 .brand-video-player {
   width: 100%;
   border-radius: var(--radius-lg);
