@@ -40,9 +40,18 @@
   z-index: 1;
 }
 
+/* Intro on the left, carousel arrows on the right (they drop below the
+   intro on narrow screens). */
+.category-cards-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-24);
+  margin-bottom: var(--space-48);
+}
+
 .category-cards-intro {
   max-width: 640px;
-  margin-bottom: var(--space-48);
 }
 
 .category-cards-eyebrow {
@@ -73,6 +82,7 @@
 }
 
 .category-card {
+  flex: 1 1 auto;
   height: 100%;
   padding: var(--space-24);
   border: 1px solid rgba(255, 255, 255, 0.14);
@@ -99,6 +109,18 @@
   background: rgba(12, 225, 243, 0.14);
   color: var(--color-cyan-500);
   margin-bottom: var(--space-16);
+}
+
+.category-card-icon-image {
+  display: block;
+  width: 20px;
+  height: 20px;
+  /* The icon is a mask: whatever colour the uploaded file is, it's painted
+     in the icon's text colour (brand cyan). --icon-mask is set inline from
+     the template as url("..."). */
+  background-color: currentColor;
+  -webkit-mask: var(--icon-mask) center / contain no-repeat;
+  mask: var(--icon-mask) center / contain no-repeat;
 }
 
 .category-card-title {
@@ -141,5 +163,124 @@
 @media (max-width: 640px) {
   .category-cards-heading {
     font-size: 28px;
+  }
+}
+
+/* ---- Carousel ---------------------------------------------------------- */
+
+.category-carousel {
+  --carousel-gap: var(--space-24);
+  --carousel-per-view: 3;
+}
+
+/* Native scroll-snap track: swipe, trackpad and keyboard scrolling work
+   without any JS; the arrows/dots/autoplay just move the same scroll
+   position. The vertical padding gives the cards' hover lift and shadow room
+   (overflow-x: auto clips vertically too). */
+.category-carousel-track {
+  display: flex;
+  gap: var(--carousel-gap);
+  overflow-x: auto;
+  padding: 12px 0 20px;
+  margin: -12px 0 -20px;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.category-carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+.category-carousel-slide {
+  display: flex;
+  flex: 0 0 calc((100% - (var(--carousel-per-view) - 1) * var(--carousel-gap)) / var(--carousel-per-view));
+  min-width: 0;
+  scroll-snap-align: start;
+}
+
+.category-carousel-controls {
+  display: flex;
+  flex-shrink: 0;
+  gap: var(--space-8);
+}
+
+.category-carousel-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--color-white);
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, opacity 0.15s ease;
+}
+
+.category-carousel-btn:hover:not(:disabled),
+.category-carousel-btn:focus-visible {
+  background: var(--color-cyan-500);
+  border-color: var(--color-cyan-500);
+  color: var(--color-navy-900);
+}
+
+.category-carousel-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.category-carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-8);
+  margin-top: var(--space-32);
+}
+
+.category-carousel-dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: width 0.2s ease, background-color 0.2s ease;
+}
+
+.category-carousel-dot:hover {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.category-carousel-dot.is-active {
+  width: 24px;
+  background: var(--color-cyan-500);
+}
+
+@media (max-width: 991.98px) {
+  .category-carousel {
+    --carousel-per-view: 2;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .category-cards-header {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: var(--space-32);
+  }
+}
+
+@media (max-width: 575.98px) {
+  .category-carousel {
+    --carousel-per-view: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .category-carousel-track {
+    scroll-behavior: auto;
   }
 }

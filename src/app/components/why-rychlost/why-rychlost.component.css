@@ -131,8 +131,8 @@
   transform: translateY(0) scale(1);
 }
 
-/* Flip container — rotates on hover to reveal the testimonial on the back
-   face. Also flips on keyboard focus-within so it's reachable without a
+/* Flip container — rotates on hover to reveal the "tested and proven" message on the
+   back face. Also flips on keyboard focus-within so it's reachable without a
    mouse. */
 .why-card-inner {
   position: relative;
@@ -168,11 +168,11 @@
 
 .why-card-front {
   transform: rotateY(0deg);
+  justify-content: center;
 }
 
 .why-card-back {
   transform: rotateY(180deg);
-  justify-content: center;
 }
 
 .why-card-icon {

@@ -1,0 +1,193 @@
+<section class="supply-editor">
+  <div class="supply-editor__head">
+    <div>
+      <h2 class="supply-editor__title">What We Supply</h2>
+      <p class="supply-editor__hint">
+        These are the cards in the "What We Supply" carousel on the home page. Add, edit, reorder, hide or delete
+        them, and upload an icon for each. The section's label, heading and intro line above the carousel are fixed
+        and can't be changed here.
+      </p>
+    </div>
+    @if (!formOpen()) {
+      <button type="button" class="supply-editor__btn supply-editor__btn--primary" (click)="startAdd()">
+        + Add category
+      </button>
+    }
+  </div>
+
+  @if (listNotice()) {
+    <p class="supply-editor__banner supply-editor__banner--success">{{ listNotice() }}</p>
+  }
+  @if (listError()) {
+    <p class="supply-editor__banner supply-editor__banner--error">{{ listError() }}</p>
+  }
+
+  @if (formOpen()) {
+    <form class="supply-editor__form" [formGroup]="form" (ngSubmit)="save()" novalidate>
+      <h3 class="supply-editor__form-title">{{ editing() ? 'Edit category' : 'New category' }}</h3>
+
+      <div class="supply-editor__field">
+        <label for="supplyTitle">Title</label>
+        <input id="supplyTitle" type="text" formControlName="title" maxlength="120" [class.is-invalid]="title.invalid && title.touched" />
+        @if (title.invalid && title.touched) {
+          <p class="supply-editor__field-error">A title is required.</p>
+        }
+      </div>
+
+      <div class="supply-editor__field">
+        <label for="supplyDescription">Description</label>
+        <textarea
+          id="supplyDescription"
+          rows="3"
+          formControlName="description"
+          maxlength="500"
+          [class.is-invalid]="description.invalid && description.touched"
+        ></textarea>
+        @if (description.invalid && description.touched) {
+          <p class="supply-editor__field-error">A description is required.</p>
+        }
+      </div>
+
+      <div class="supply-editor__field">
+        <label for="supplyLink">"View category" link <span class="supply-editor__optional">(optional)</span></label>
+        <input id="supplyLink" type="text" formControlName="linkUrl" maxlength="300" placeholder="/products?category=…" />
+        <p class="supply-editor__field-help">
+          Where the card's link goes — a page on this site starting with <code>/</code>, or a full https:// address.
+          Leave blank to link to the product list filtered by this category's title.
+        </p>
+      </div>
+
+      <div class="supply-editor__field">
+        <label for="supplyIcon">Icon</label>
+
+        <div class="supply-editor__icon-row">
+          <span class="supply-editor__icon-preview" aria-hidden="true">
+            @if (formIconMask(); as mask) {
+              <span class="supply-editor__icon-image" [style.--icon-mask]="mask"></span>
+            } @else {
+              <span class="supply-editor__icon-empty">No icon</span>
+            }
+          </span>
+
+          <div class="supply-editor__icon-controls">
+            <input
+              #iconInput
+              id="supplyIcon"
+              type="file"
+              accept=".svg,.png,.webp,image/svg+xml,image/png,image/webp"
+              (change)="onIconSelected($event)"
+            />
+
+            @if (selectedFileName()) {
+              <button type="button" class="supply-editor__link-btn" (click)="discardSelectedFile(iconInput)">
+                Clear chosen file
+              </button>
+            }
+            @if (canRemoveSavedIcon()) {
+              <label class="supply-editor__check supply-editor__check--inline">
+                <input type="checkbox" [checked]="removeIcon()" (change)="toggleRemoveIcon()" />
+                Remove the current icon
+              </label>
+            }
+          </div>
+        </div>
+
+        @if (iconError()) {
+          <p class="supply-editor__field-error">{{ iconError() }}</p>
+        }
+        <p class="supply-editor__field-help">
+          SVG, PNG or WebP with a transparent background, up to 256 KB. The site shows the icon in the brand's cyan
+          on the navy card, so a simple single-colour shape works best — whatever colour the file is, it's recoloured.
+          Without an icon, the card shows a default one.
+        </p>
+      </div>
+
+      <label class="supply-editor__check">
+        <input type="checkbox" formControlName="isActive" />
+        Show this category on the home page
+      </label>
+
+      @if (formError()) {
+        <p class="supply-editor__banner supply-editor__banner--error">{{ formError() }}</p>
+      }
+
+      <div class="supply-editor__actions">
+        <button type="submit" class="supply-editor__btn supply-editor__btn--primary" [disabled]="saving()">
+          {{ saving() ? 'Saving…' : editing() ? 'Save changes' : 'Add category' }}
+        </button>
+        <button type="button" class="supply-editor__btn" [disabled]="saving()" (click)="cancelForm()">Cancel</button>
+      </div>
+    </form>
+  }
+
+  @if (loading()) {
+    <p class="supply-editor__status">Loading…</p>
+  } @else if (loadError()) {
+    <p class="supply-editor__banner supply-editor__banner--error">{{ loadError() }}</p>
+    <button type="button" class="supply-editor__btn" (click)="load()">Try again</button>
+  } @else if (categories().length === 0) {
+    <p class="supply-editor__status">
+      No categories yet — the carousel on the home page is empty. Use "Add category" to create the first one.
+    </p>
+  } @else {
+    <ol class="supply-editor__list">
+      @for (category of categories(); track category.id; let i = $index; let first = $first; let last = $last) {
+        <li class="supply-editor__row" [class.is-hidden]="!category.isActive">
+          <span class="supply-editor__icon-preview" aria-hidden="true">
+            @if (iconMask(category); as mask) {
+              <span class="supply-editor__icon-image" [style.--icon-mask]="mask"></span>
+            } @else {
+              <span class="supply-editor__icon-empty">No icon</span>
+            }
+          </span>
+
+          <div class="supply-editor__row-body">
+            <p class="supply-editor__row-title">
+              {{ category.title }}
+              @if (!category.isActive) {
+                <span class="supply-editor__badge">Hidden</span>
+              }
+            </p>
+            <p class="supply-editor__row-text">{{ category.description }}</p>
+            <p class="supply-editor__row-link">{{ category.linkUrl }}</p>
+          </div>
+
+          <div class="supply-editor__row-actions">
+            @if (confirmingDeleteId() === category.id) {
+              <span class="supply-editor__confirm">Delete this category?</span>
+              <button type="button" class="supply-editor__btn supply-editor__btn--danger" (click)="confirmDelete(category)">
+                Yes, delete
+              </button>
+              <button type="button" class="supply-editor__btn" (click)="cancelDelete()">Keep</button>
+            } @else {
+              <button
+                type="button"
+                class="supply-editor__icon-btn"
+                aria-label="Move up"
+                title="Move up"
+                [disabled]="first"
+                (click)="move(i, -1)"
+              >
+                ↑
+              </button>
+              <button
+                type="button"
+                class="supply-editor__icon-btn"
+                aria-label="Move down"
+                title="Move down"
+                [disabled]="last"
+                (click)="move(i, 1)"
+              >
+                ↓
+              </button>
+              <button type="button" class="supply-editor__btn" (click)="startEdit(category)">Edit</button>
+              <button type="button" class="supply-editor__btn supply-editor__btn--danger-outline" (click)="askDelete(category)">
+                Delete
+              </button>
+            }
+          </div>
+        </li>
+      }
+    </ol>
+  }
+</section>

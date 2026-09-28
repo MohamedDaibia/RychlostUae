@@ -6,11 +6,12 @@ import { AuthService } from '../../../core/auth/auth.service';
 import { WhoWeAreService } from '../../../core/content/who-we-are.service';
 import { WhyRychlostService } from '../../../core/content/why-rychlost.service';
 import { WholesaleCtaService } from '../../../core/content/wholesale-cta.service';
+import { SupplyCategoriesEditorComponent } from '../supply-categories-editor/supply-categories-editor.component';
 
 @Component({
   selector: 'app-admin-cms',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, SupplyCategoriesEditorComponent],
   templateUrl: './admin-cms.component.html',
   styleUrl: './admin-cms.component.scss',
 })

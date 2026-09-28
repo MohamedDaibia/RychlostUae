@@ -1,4 +1,6 @@
-<div class="admin-home">
+  <h1>{{ message() }}</h1>
+
+<div class="admin-home mt-5">
   <div class="row">
     <div class="col-sm-6">
  <section class="content-editor">
@@ -108,11 +110,11 @@
     }
   </section>
   </div>
-  <h1>{{ message() }}</h1>
+
 
  
 
-  <section class="content-editor content-editor--wide">
+  <section class="content-editor mt-5 content-editor--wide">
     <h2 class="content-editor__title">Why Rychlost</h2>
     <p class="content-editor__hint">
       The "Why Rychlost" label above this section is fixed and can't be changed here.
@@ -232,5 +234,6 @@
     }
   </section>
 
- 
+  <!-- "What We Supply" carousel cards (list + icon upload) — its own component. -->
+  <app-supply-categories-editor />
 </div>

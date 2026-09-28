@@ -1,0 +1,380 @@
+// Admin editor for the "What We Supply" carousel. Styled to match the other
+// home-page content editors (.content-editor cards in admin-cms.component) —
+// those styles are scoped to that component, so this one carries its own.
+
+$font-body: var(--font-body, 'Inter', 'Segoe UI', Roboto, sans-serif);
+$font-display: var(--font-display, 'Space Grotesk', 'Segoe UI', Roboto, sans-serif);
+$navy-900: var(--color-navy-900, #0a1530);
+$navy-700: var(--color-navy-700, #122254);
+$cyan-700: var(--color-cyan-700, #06afc0);
+$neutral-100: var(--color-neutral-100, #f5f7fa);
+$neutral-300: var(--color-neutral-300, #dce1e8);
+$neutral-600: var(--color-neutral-600, #5b6472);
+$danger: #d0342c;
+
+.supply-editor {
+  display: block;
+  max-width: 1040px;
+  margin-top: 48px;
+  background: #fff;
+  border-radius: var(--radius-md, 12px);
+  box-shadow: var(--shadow-card, 0 8px 24px rgba(10, 21, 48, 0.08));
+  padding: 24px;
+  font-family: $font-body;
+
+  &__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+
+    @media (max-width: 640px) {
+      flex-direction: column;
+    }
+  }
+
+  &__title {
+    font-family: $font-display;
+    font-size: 1.25rem;
+    color: $navy-900;
+    margin: 0 0 4px;
+  }
+
+  &__hint {
+    font-size: 0.875rem;
+    color: $neutral-600;
+    margin: 0;
+    max-width: 640px;
+  }
+
+  &__status {
+    color: $neutral-600;
+    margin: 0;
+  }
+
+  &__banner {
+    font-size: 0.875rem;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm, 8px);
+    margin: 0 0 16px;
+
+    &--error {
+      color: #a3241d;
+      background: rgba(208, 52, 44, 0.1);
+    }
+
+    &--success {
+      color: #0a7a3c;
+      background: rgba(12, 225, 243, 0.12);
+    }
+  }
+
+  // ---- Buttons ----
+
+  &__btn {
+    padding: 8px 14px;
+    border: 1px solid $neutral-300;
+    border-radius: var(--radius-sm, 8px);
+    background: #fff;
+    color: $navy-900;
+    font-family: $font-body;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+
+    &:hover:not(:disabled) {
+      border-color: $navy-900;
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    &--primary {
+      background: $navy-900;
+      border-color: $navy-900;
+      color: #fff;
+
+      &:hover:not(:disabled) {
+        background: $navy-700;
+        border-color: $navy-700;
+      }
+    }
+
+    &--danger {
+      background: $danger;
+      border-color: $danger;
+      color: #fff;
+
+      &:hover:not(:disabled) {
+        background: #a3241d;
+        border-color: #a3241d;
+      }
+    }
+
+    &--danger-outline {
+      color: $danger;
+
+      &:hover:not(:disabled) {
+        border-color: $danger;
+      }
+    }
+  }
+
+  &__icon-btn {
+    width: 34px;
+    height: 34px;
+    border: 1px solid $neutral-300;
+    border-radius: var(--radius-sm, 8px);
+    background: #fff;
+    color: $navy-900;
+    font-size: 1rem;
+    line-height: 1;
+    cursor: pointer;
+
+    &:hover:not(:disabled) {
+      border-color: $navy-900;
+    }
+
+    &:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+  }
+
+  &__link-btn {
+    align-self: flex-start;
+    padding: 0;
+    border: none;
+    background: none;
+    color: $cyan-700;
+    font-family: $font-body;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  // ---- Add / edit form ----
+
+  &__form {
+    margin-bottom: 24px;
+    padding: 20px;
+    border: 1px solid $neutral-300;
+    border-radius: var(--radius-sm, 8px);
+    background: $neutral-100;
+
+    input[type='text'],
+    textarea {
+      background: #fff;
+    }
+  }
+
+  &__form-title {
+    font-family: $font-display;
+    font-size: 1rem;
+    color: $navy-900;
+    margin: 0 0 16px;
+  }
+
+  &__field {
+    margin-bottom: 16px;
+
+    label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: $navy-900;
+      margin-bottom: 6px;
+    }
+
+    input[type='text'],
+    textarea {
+      width: 100%;
+      font-family: $font-body;
+      font-size: 0.9375rem;
+      color: $navy-900;
+      padding: 10px 12px;
+      border: 1px solid $neutral-300;
+      border-radius: var(--radius-sm, 8px);
+      resize: vertical;
+
+      &:focus {
+        outline: none;
+        border-color: $cyan-700;
+      }
+
+      &.is-invalid {
+        border-color: $danger;
+      }
+    }
+  }
+
+  &__optional {
+    font-weight: 400;
+    color: $neutral-600;
+  }
+
+  &__field-error {
+    font-size: 0.8125rem;
+    color: $danger;
+    margin: 6px 0 0;
+  }
+
+  &__field-help {
+    font-size: 0.8125rem;
+    color: $neutral-600;
+    margin: 6px 0 0;
+  }
+
+  &__check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: $navy-900;
+    margin: 0 0 16px;
+    cursor: pointer;
+
+    &--inline {
+      margin: 0;
+      font-weight: 500;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  // ---- Icon preview: a navy tile, since the site paints icons in cyan on
+  // navy; the icon itself is drawn as a mask so it shows in the tile's text
+  // colour whatever colour the file is. ----
+
+  &__icon-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  &__icon-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  &__icon-preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: $navy-900;
+    color: var(--color-cyan-500, #0ce1f3);
+  }
+
+  &__icon-image {
+    display: block;
+    width: 24px;
+    height: 24px;
+    background-color: currentColor;
+    -webkit-mask: var(--icon-mask) center / contain no-repeat;
+    mask: var(--icon-mask) center / contain no-repeat;
+  }
+
+  &__icon-empty {
+    font-size: 0.625rem;
+    font-weight: 600;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  // ---- Category list ----
+
+  &__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 0;
+    border-top: 1px solid $neutral-300;
+
+    &:first-child {
+      border-top: none;
+    }
+
+    &.is-hidden {
+      opacity: 0.6;
+    }
+
+    @media (max-width: 860px) {
+      flex-wrap: wrap;
+    }
+  }
+
+  &__row-body {
+    flex: 1 1 240px;
+    min-width: 0;
+  }
+
+  &__row-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: $navy-900;
+    margin: 0 0 2px;
+  }
+
+  &__badge {
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: $neutral-300;
+    color: $neutral-600;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  &__row-text {
+    font-size: 0.875rem;
+    color: $neutral-600;
+    margin: 0 0 2px;
+  }
+
+  &__row-link {
+    font-size: 0.75rem;
+    color: $cyan-700;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__row-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  &__confirm {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: $danger;
+  }
+}

@@ -26,7 +26,7 @@ const FALLBACK_ITEMS = [
 // marks — the template supplies those. The card's front face and the
 // attribution role ("Founder, Rychlost") are fixed and are not editable.
 const FALLBACK_TESTIMONIAL_QUOTE =
-  'Rychlost UAE delivered a campus network that is faster, cleaner, and easier to manage. Their structured ' +
+  'Rychlost delivered a campus network that is faster, cleaner, and easier to manage. Their structured ' +
   'cabling design and AV integration simplified our operations and improved reliability across every floor.';
 const FALLBACK_TESTIMONIAL_OWNER_NAME = 'Nathan';
 

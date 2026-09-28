@@ -26,20 +26,9 @@
       <div class="col-lg-5">
         <div class="why-card" #card>
           <!-- Flip card: hover rotates .why-card-inner 180° to reveal the
-               testimonial on the back face. -->
+               "tested and proven" message on the back face. -->
           <div class="why-card-inner">
             <div class="why-card-face why-card-front">
-              <span class="why-card-icon" aria-hidden="true">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                  <path d="M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6l7-3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
-                  <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-              </span>
-              <h3 class="why-card-heading">Every product tested and proven — before it reaches you.</h3>
-              <p class="why-card-text">Trusted by top companies for quality, reliable hardware across the UAE and Middle East.</p>
-            </div>
-
-            <div class="why-card-face why-card-back">
               <svg class="why-card-quote-mark" width="28" height="22" viewBox="0 0 28 22" fill="none" aria-hidden="true">
                 <path d="M0 22V13.2C0 5.4 4.4 0.6 11.6 0L12.6 3.4C8 4.4 5.6 7 5.4 10.8H11.6V22H0ZM16.4 22V13.2C16.4 5.4 20.8 0.6 28 0L29 3.4C24.4 4.4 22 7 21.8 10.8H28V22H16.4Z" fill="currentColor" />
               </svg>
@@ -48,6 +37,17 @@
                 <span class="why-card-attribution-name">{{ testimonialOwnerName() }}</span>
                 <span class="why-card-attribution-role">Founder, Rychlost</span>
               </p>
+            </div>
+
+            <div class="why-card-face why-card-back">
+              <span class="why-card-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6l7-3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+                  <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </span>
+              <h3 class="why-card-heading">Every product tested and proven — before it reaches you.</h3>
+              <p class="why-card-text">Trusted by top companies for quality, reliable hardware.</p>
             </div>
           </div>
         </div>
