@@ -1,0 +1,29 @@
+<div class="products-layout">
+  <nav class="products-tabs">
+    <a
+      class="products-tabs__link"
+      routerLink="categories"
+      routerLinkActive="products-tabs__link--active"
+    >
+      Categories
+    </a>
+    <a
+      class="products-tabs__link"
+      routerLink="sub-categories"
+      routerLinkActive="products-tabs__link--active"
+    >
+      Product Types
+    </a>
+    <a
+      class="products-tabs__link"
+      routerLink="products"
+      routerLinkActive="products-tabs__link--active"
+    >
+      Products
+    </a>
+  </nav>
+
+  <div class="products-layout__content">
+    <router-outlet></router-outlet>
+  </div>
+</div>

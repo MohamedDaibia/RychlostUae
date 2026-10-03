@@ -11,6 +11,10 @@ import { AdminLoginComponent } from './pages/admin/admin-login/admin-login.compo
 import { AdminLayoutComponent } from './pages/admin/admin-layout/admin-layout.component';
 import { AdminCmsComponent } from './pages/admin/admin-cms/admin-cms.component';
 import { AdminComingSoonComponent } from './pages/admin/admin-coming-soon/admin-coming-soon.component';
+import { AdminProductsLayoutComponent } from './pages/admin/products/admin-products-layout.component';
+import { AdminCategoriesComponent } from './pages/admin/products/admin-categories.component';
+import { AdminSubCategoriesComponent } from './pages/admin/products/admin-sub-categories.component';
+import { AdminProductsListComponent } from './pages/admin/products/admin-products-list.component';
 import { authGuard } from './core/auth/auth.guard';
 
 // Header, Category Nav, and Footer stay mounted in AppComponent across every
@@ -19,9 +23,11 @@ import { authGuard } from './core/auth/auth.guard';
 //
 // /admin/cms is now a layout route (AdminLayoutComponent renders the sidebar
 // + logo) with the actual screens as children, so every sidebar link is a
-// child of the same guarded parent. Products/Settings/Stocks/Billing don't
-// have real screens yet, so they share AdminComingSoonComponent (title passed
-// via route `data`) until each is built out.
+// child of the same guarded parent. Settings/Stocks/Billing don't have real
+// screens yet, so they share AdminComingSoonComponent (title passed via
+// route `data`) until each is built out. Products now has its own layout
+// route with a Categories / Sub Categories / Products tab bar
+// (AdminProductsLayoutComponent) — see admin-products-layout.component.
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'products', component: ProductsComponent },
@@ -38,7 +44,16 @@ export const routes: Routes = [
     canActivateChild: [authGuard],
     children: [
       { path: '', component: AdminCmsComponent },
-      { path: 'products', component: AdminComingSoonComponent, data: { title: 'Products' } },
+      {
+        path: 'products',
+        component: AdminProductsLayoutComponent,
+        children: [
+          { path: '', redirectTo: 'categories', pathMatch: 'full' },
+          { path: 'categories', component: AdminCategoriesComponent },
+          { path: 'sub-categories', component: AdminSubCategoriesComponent },
+          { path: 'products', component: AdminProductsListComponent },
+        ],
+      },
       { path: 'settings', component: AdminComingSoonComponent, data: { title: 'Settings' } },
       { path: 'stocks', component: AdminComingSoonComponent, data: { title: 'Stocks' } },
       { path: 'billing', component: AdminComingSoonComponent, data: { title: 'Billing' } },

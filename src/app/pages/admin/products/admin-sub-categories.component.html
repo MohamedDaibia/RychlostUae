@@ -1,0 +1,193 @@
+<div class="sub-categories-page">
+  <div class="sub-categories-page__header">
+    <div class="search-box">
+      <svg class="search-box__icon" viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true">
+        <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.6" />
+        <path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+      </svg>
+      <input
+        type="text"
+        placeholder="Search product types…"
+        [ngModel]="searchQuery()"
+        (ngModelChange)="onSearchChange($event)"
+        name="search"
+      />
+    </div>
+
+    <button type="button" class="action-btn action-btn--primary" (click)="openAddModal()">
+      Add Product Type
+    </button>
+  </div>
+
+  @if (listError()) {
+    <p class="admin-alert admin-alert--error" role="alert">{{ listError() }}</p>
+  }
+
+  @if (loading()) {
+    <p class="admin-alert">Loading product types…</p>
+  } @else if (loadError()) {
+    <p class="admin-alert admin-alert--error" role="alert">
+      {{ loadError() }}
+      <button type="button" class="link-btn" (click)="load()">Try again</button>
+    </p>
+  }
+
+  <div class="sub-categories-list">
+    @for (subCategory of pagedSubCategories(); track trackById($index, subCategory)) {
+      <div class="sub-category-row">
+        <div class="sub-category-row__image">
+          @if (subCategory.imageUrl) {
+            <img [src]="subCategory.imageUrl" [alt]="subCategory.name" />
+          } @else {
+            <div class="sub-category-row__placeholder" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none">
+                <path
+                  d="M4 7l8-4 8 4v10l-8 4-8-4V7z"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linejoin="round"
+                />
+                <path d="M4 7l8 4 8-4M12 11v10" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+              </svg>
+            </div>
+          }
+        </div>
+
+        <div class="sub-category-row__info">
+          <span class="sub-category-row__name">{{ subCategory.name }}</span>
+          <span class="sub-category-row__category">{{ categoryName(subCategory.categoryId) }}</span>
+        </div>
+
+        <span
+          class="sub-category-row__status"
+          [class.sub-category-row__status--active]="subCategory.status === 'active'"
+          [class.sub-category-row__status--inactive]="subCategory.status === 'inactive'"
+        >
+          {{ subCategory.status === 'active' ? 'Active' : 'Inactive' }}
+        </span>
+
+        <div class="sub-category-row__actions">
+          <button type="button" class="action-btn action-btn--primary" (click)="openEditModal(subCategory)">
+            Edit
+          </button>
+          <button type="button" class="action-btn action-btn--danger" (click)="deleteSubCategory(subCategory)">
+            Delete
+          </button>
+        </div>
+      </div>
+    } @empty {
+      @if (!loading() && !loadError()) {
+        <p class="sub-categories-list__empty">No product types found.</p>
+      }
+    }
+  </div>
+
+  @if (filteredSubCategories().length > 0) {
+    <div class="pagination">
+      <span class="pagination__info">
+        Page {{ currentPage() }} of {{ totalPages() }} ({{ filteredSubCategories().length }} total)
+      </span>
+      <div class="pagination__controls">
+        <button
+          type="button"
+          class="action-btn action-btn--secondary"
+          [disabled]="currentPage() === 1"
+          (click)="prevPage()"
+        >
+          Previous
+        </button>
+        <button
+          type="button"
+          class="action-btn action-btn--secondary"
+          [disabled]="currentPage() === totalPages()"
+          (click)="nextPage()"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  }
+</div>
+
+@if (isModalOpen()) {
+  <div class="modal-backdrop" (click)="closeModal()">
+    <div class="modal-panel" (click)="$event.stopPropagation()">
+      <div class="modal-panel__body">
+        <div class="modal-panel__row">
+          <div class="modal-panel__field">
+            <label for="parentCategory">Category</label>
+            <select id="parentCategory" [(ngModel)]="formCategoryId" name="parentCategory">
+              @for (category of categories(); track category.id) {
+                <option [ngValue]="category.id">{{ category.name }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="modal-panel__field">
+            <label for="sortOrder">Sort number</label>
+            <input id="sortOrder" type="number" min="0" [(ngModel)]="formSortOrder" name="sortOrder" />
+          </div>
+        </div>
+
+        <div class="modal-panel__row">
+          <div class="modal-panel__field">
+            <label for="subCategoryName">Product type</label>
+            <input id="subCategoryName" type="text" [(ngModel)]="formName" name="subCategoryName" />
+          </div>
+
+          <div class="modal-panel__field">
+            <label for="seoSubCategoryName">SEO friendly Product type</label>
+            <input id="seoSubCategoryName" type="text" [(ngModel)]="formSeoName" name="seoSubCategoryName" />
+          </div>
+        </div>
+
+        <div class="modal-panel__field">
+          <label for="subCategoryStatus">Status</label>
+          <select id="subCategoryStatus" [(ngModel)]="formStatus" name="subCategoryStatus">
+            <option value="active">Active (will show the product type on the website)</option>
+            <option value="inactive">Inactive (hidden from the website)</option>
+          </select>
+        </div>
+
+        <div class="modal-panel__field">
+          <label for="subCategoryImage">Image (300 x 150)</label>
+          <input
+            #imageInput
+            id="subCategoryImage"
+            type="file"
+            accept=".jpg,.jpeg,.png,.webp"
+            (change)="onFileSelected($event)"
+          />
+          <span class="field-hint">
+            JPG, PNG or WebP, up to 15 MB — larger than 512 KB is shrunk automatically before uploading.
+          </span>
+          @if (processingImage()) {
+            <span class="field-hint">Optimizing image…</span>
+          }
+          @if (formImagePreview) {
+            <button type="button" class="link-btn" (click)="removeSavedImage(imageInput)">Remove image</button>
+          }
+        </div>
+
+        <div class="modal-panel__preview">
+          @if (formImagePreview) {
+            <img [src]="formImagePreview" alt="Image preview" />
+          } @else {
+            <span>Preview</span>
+          }
+        </div>
+      </div>
+
+      @if (formError()) {
+        <p class="admin-alert admin-alert--error modal-panel__error" role="alert">{{ formError() }}</p>
+      }
+
+      <div class="modal-panel__footer">
+        <button type="button" class="action-btn action-btn--secondary" [disabled]="saving()" (click)="closeModal()">Cancel</button>
+        <button type="button" class="action-btn action-btn--primary" [disabled]="saving() || processingImage()" (click)="saveChanges()">
+          {{ saving() ? 'Saving…' : 'Save changes' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

@@ -1,0 +1,13 @@
+.tab-panel {
+  h2 {
+    font-family: var(--font-display, 'Space Grotesk', 'Segoe UI', Roboto, sans-serif);
+    font-size: 1.5rem;
+    color: var(--color-navy-900, #0a1530);
+    margin: 0 0 8px;
+  }
+
+  &__hint {
+    color: var(--color-neutral-600, #5b6478);
+    margin: 0;
+  }
+}

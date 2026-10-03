@@ -1,0 +1,35 @@
+.products-layout {
+  display: flex;
+  flex-direction: column;
+}
+
+.products-tabs {
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid var(--color-neutral-200, #e2e6ef);
+  margin-bottom: 24px;
+
+  &__link {
+    padding: 12px 20px;
+    font-family: var(--font-display, 'Space Grotesk', 'Segoe UI', Roboto, sans-serif);
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--color-neutral-600, #5b6478);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s ease, border-color 0.15s ease;
+
+    &:hover {
+      color: var(--color-navy-900, #0a1530);
+    }
+
+    &--active {
+      color: var(--color-navy-900, #0a1530);
+      border-bottom-color: var(--color-cyan-500, #17b8d6);
+    }
+  }
+}
+
+.products-layout__content {
+  min-width: 0;
+}
