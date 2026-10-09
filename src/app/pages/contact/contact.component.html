@@ -48,7 +48,11 @@
             <textarea name="message" rows="5" required placeholder="What can we help with?" [value]="defaultMessage()"></textarea>
           </label>
 
-          <button type="submit" class="btn btn--primary contact-submit">Send Message</button>
+          <p class="contact-error" role="alert" *ngIf="sendError()">{{ sendError() }}</p>
+
+          <button type="submit" class="btn btn--primary contact-submit" [disabled]="sending()">
+            {{ sending() ? 'Sending…' : 'Send Message' }}
+          </button>
         </form>
 
         <ng-template #successPanel>

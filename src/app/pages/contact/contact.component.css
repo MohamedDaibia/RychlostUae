@@ -215,3 +215,13 @@
     font-size: 28px;
   }
 }
+
+.contact-error {
+  margin: 0;
+  padding: var(--space-12) var(--space-16);
+  border: 1px solid #fda29b;
+  border-radius: var(--radius-sm);
+  background: #fef3f2;
+  color: #b42318;
+  font-size: 14px;
+}

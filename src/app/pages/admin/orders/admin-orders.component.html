@@ -1,0 +1,167 @@
+<div class="orders-page">
+  <div class="orders-page__title">
+    <h2>Orders</h2>
+    @if (newCount() > 0) {
+      <span class="orders-page__badge">{{ newCount() }} new</span>
+    }
+  </div>
+  <p class="orders-page__hint">
+    Every request placed through the website's Contact page (including “Request a Quote” from a product page), newest
+    first.
+  </p>
+
+  <div class="orders-page__filters">
+    <div class="search-box">
+      <svg class="search-box__icon" viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true">
+        <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.6" />
+        <path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+      </svg>
+      <input
+        type="text"
+        placeholder="Search name, company, email, product…"
+        [ngModel]="searchQuery()"
+        (ngModelChange)="onSearchChange($event)"
+        name="search"
+      />
+    </div>
+
+    <select
+      class="filter-select"
+      aria-label="Reason"
+      [ngModel]="reasonFilter()"
+      (ngModelChange)="onReasonChange($event)"
+      name="reason"
+    >
+      @for (option of reasonOptions(); track option.reason) {
+        <option [value]="option.reason">{{ option.reason }} ({{ option.count }})</option>
+      }
+      <option value="all">All reasons ({{ orders().length }})</option>
+    </select>
+
+    <select
+      class="filter-select"
+      aria-label="Status"
+      [ngModel]="statusFilter()"
+      (ngModelChange)="onStatusFilterChange($event)"
+      name="status"
+    >
+      <option value="all">All statuses</option>
+      @for (status of statuses; track status) {
+        <option [value]="status">{{ status }}</option>
+      }
+    </select>
+  </div>
+
+  @if (listError()) {
+    <p class="admin-alert admin-alert--error" role="alert">{{ listError() }}</p>
+  }
+
+  @if (loading()) {
+    <p class="admin-alert">Loading orders…</p>
+  } @else if (loadError()) {
+    <p class="admin-alert admin-alert--error" role="alert">
+      {{ loadError() }}
+      <button type="button" class="link-btn" (click)="load()">Try again</button>
+    </p>
+  }
+
+  <div class="orders-list">
+    @for (order of pagedOrders(); track trackById($index, order)) {
+      <div class="order-card" [class.order-card--new]="order.status === 'New'">
+        <div class="order-row">
+          <span class="order-row__id">#{{ order.id }}</span>
+
+          <div class="order-row__customer">
+            <span class="order-row__name">{{ order.name }}</span>
+            <span class="order-row__meta">{{ order.company || order.email }}</span>
+          </div>
+
+          <div class="order-row__subject">
+            @if (order.productName) {
+              <span class="order-row__product">{{ order.productName }}</span>
+            }
+            <span class="order-row__meta">{{ order.reason }}</span>
+          </div>
+
+          <span class="order-row__date">{{ order.createdAt | date: 'd MMM y, h:mm a' }}</span>
+
+          <select
+            class="status-select"
+            [class]="'status-select ' + statusClass(order.status)"
+            [ngModel]="order.status"
+            (ngModelChange)="changeStatus(order, $event)"
+            [name]="'status' + order.id"
+            [attr.aria-label]="'Status of order ' + order.id"
+          >
+            @for (status of statuses; track status) {
+              <option [value]="status">{{ status }}</option>
+            }
+          </select>
+
+          <div class="order-row__actions">
+            <button type="button" class="action-btn action-btn--secondary" (click)="toggle(order.id)">
+              {{ isOpen(order.id) ? 'Hide' : 'Details' }}
+            </button>
+            <button type="button" class="action-btn action-btn--danger" (click)="deleteOrder(order)">Delete</button>
+          </div>
+        </div>
+
+        @if (isOpen(order.id)) {
+          <div class="order-details">
+            <dl>
+              <div>
+                <dt>Email</dt>
+                <dd><a [href]="'mailto:' + order.email">{{ order.email }}</a></dd>
+              </div>
+              <div>
+                <dt>Phone</dt>
+                <dd>
+                  @if (order.phone) {
+                    <a [href]="'tel:' + order.phone">{{ order.phone }}</a>
+                  } @else {
+                    —
+                  }
+                </dd>
+              </div>
+              <div>
+                <dt>Company</dt>
+                <dd>{{ order.company || '—' }}</dd>
+              </div>
+              <div>
+                <dt>Reason</dt>
+                <dd>{{ order.reason }}</dd>
+              </div>
+            </dl>
+            <p class="order-details__label">Message</p>
+            <p class="order-details__message">{{ order.message }}</p>
+          </div>
+        }
+      </div>
+    } @empty {
+      @if (!loading() && !loadError()) {
+        <p class="orders-list__empty">No orders found.</p>
+      }
+    }
+  </div>
+
+  @if (filteredOrders().length > 0) {
+    <div class="pagination">
+      <span class="pagination__info">
+        Page {{ currentPage() }} of {{ totalPages() }} ({{ filteredOrders().length }} total)
+      </span>
+      <div class="pagination__controls">
+        <button type="button" class="action-btn action-btn--secondary" [disabled]="currentPage() === 1" (click)="prevPage()">
+          Previous
+        </button>
+        <button
+          type="button"
+          class="action-btn action-btn--secondary"
+          [disabled]="currentPage() === totalPages()"
+          (click)="nextPage()"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  }
+</div>

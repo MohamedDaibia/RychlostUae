@@ -227,3 +227,113 @@
     position: static;
   }
 }
+
+.detail-media {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-media > .detail-img {
+  flex: 1;
+  min-height: 0;
+  object-fit: contain;
+}
+
+.detail-thumbs {
+  display: flex;
+  gap: var(--space-8);
+  padding: var(--space-8);
+  background: var(--color-white);
+}
+
+.detail-thumb {
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  background: var(--color-neutral-100);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.detail-thumb.is-active {
+  border-color: var(--color-cyan-500);
+}
+
+.detail-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.detail-subheading {
+  margin: 0 0 var(--space-8);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-neutral-600);
+}
+
+.detail-variants,
+.detail-items {
+  margin: 0 0 var(--space-24);
+}
+
+.variant-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.variant-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+  padding: 6px 12px;
+  border: 1px solid var(--color-neutral-300);
+  border-radius: var(--radius-full);
+  font-size: 13px;
+  color: var(--color-navy-900);
+}
+
+.variant-swatch {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1px solid var(--color-neutral-300);
+}
+
+.item-list {
+  margin: 0;
+  border: 1px solid var(--color-neutral-300);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.item-list-row {
+  display: grid;
+  grid-template-columns: minmax(100px, 1fr) 2fr;
+  gap: var(--space-12);
+  padding: var(--space-8) var(--space-12);
+  font-size: 14px;
+}
+
+.item-list-row + .item-list-row {
+  border-top: 1px solid var(--color-neutral-300);
+}
+
+.item-list-row dt {
+  font-weight: 600;
+  color: var(--color-navy-900);
+}
+
+.item-list-row dd {
+  margin: 0;
+  color: var(--color-neutral-600);
+}

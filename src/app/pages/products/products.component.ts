@@ -1,17 +1,18 @@
-import { Component, OnInit, computed, signal } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
-import { PRODUCTS } from '../../core/data/products.data';
-
-interface CategoryGroup {
-  category: string;
-  types: string[];
-}
+import {
+  PublicCatalogService,
+  type StoreCategory,
+  type StoreProduct,
+} from '../../core/catalog/public-catalog.service';
 
 type SortKey = 'name-asc' | 'name-desc' | 'type-asc';
 
+// Categories, product types and products all come from the CMS (admin >
+// Products tabs) through PublicCatalogService — nothing is hardcoded here.
 @Component({
   selector: 'app-products',
   standalone: true,
@@ -20,41 +21,84 @@ type SortKey = 'name-asc' | 'name-desc' | 'type-asc';
   styleUrl: './products.component.css',
 })
 export class ProductsComponent implements OnInit {
-  readonly products = PRODUCTS;
+  private readonly catalog = inject(PublicCatalogService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly titleService = inject(Title);
 
-  readonly categoryGroups: CategoryGroup[] = this.buildCategoryGroups();
-  readonly allTypes: string[] = this.categoryGroups.flatMap((g) => g.types);
-  private readonly typeCounts = this.buildTypeCounts();
+  readonly loading = signal(true);
+  readonly loadError = signal(false);
+
+  readonly categories = signal<StoreCategory[]>([]);
+  readonly products = signal<StoreProduct[]>([]);
+
+  // Rail groups: categories that actually have product types.
+  readonly categoryGroups = computed(() => this.categories().filter((c) => c.types.length > 0));
+
+  private readonly typeCounts = computed(() => {
+    const counts = new Map<number, number>();
+    for (const p of this.products()) {
+      counts.set(p.typeId, (counts.get(p.typeId) ?? 0) + 1);
+    }
+    return counts;
+  });
 
   readonly searchTerm = signal('');
   readonly sortKey = signal<SortKey>('name-asc');
-  readonly selectedTypes = signal<Set<string>>(new Set(this.allTypes));
+  // Product-type ids currently ticked in the rail. Starts as "all types".
+  readonly selectedTypes = signal<Set<number>>(new Set());
   readonly railOpen = signal(false);
 
   readonly filteredProducts = computed(() => {
     const term = this.searchTerm().trim().toLowerCase();
     const active = this.selectedTypes();
 
-    let list = this.products.filter((p) => active.has(p.type));
+    let list = this.products().filter((p) => active.has(p.typeId));
     if (term) {
       list = list.filter((p) =>
-        `${p.name} ${p.type} ${p.category} ${p.description}`.toLowerCase().includes(term)
+        `${p.name} ${p.typeName} ${p.categoryName} ${p.description}`.toLowerCase().includes(term),
       );
     }
 
     const sort = this.sortKey();
     return [...list].sort((a, b) => {
       if (sort === 'name-desc') return b.name.localeCompare(a.name);
-      if (sort === 'type-asc') return a.type.localeCompare(b.type) || a.name.localeCompare(b.name);
+      if (sort === 'type-asc') return a.typeName.localeCompare(b.typeName) || a.name.localeCompare(b.name);
       return a.name.localeCompare(b.name);
     });
   });
 
-  constructor(private readonly route: ActivatedRoute, private readonly titleService: Title) {}
-
   ngOnInit(): void {
     this.titleService.setTitle('Products | Rychlost');
+    this.load();
+  }
 
+  load(): void {
+    this.loading.set(true);
+    this.loadError.set(false);
+
+    this.catalog.getCatalog().subscribe({
+      next: ({ categories, products }) => {
+        this.categories.set(categories);
+        this.products.set(products);
+        this.selectedTypes.set(new Set(this.allTypeIds()));
+        this.applyQueryParams();
+        this.loading.set(false);
+      },
+      error: () => {
+        this.loadError.set(true);
+        this.loading.set(false);
+      },
+    });
+  }
+
+  private allTypeIds(): number[] {
+    return this.categoryGroups().flatMap((g) => g.types.map((t) => t.id));
+  }
+
+  // Deep links (?category=…&item=…, ?q=…) match a category / product type by
+  // name or SEO name; if nothing matches, fall back to a text search so the
+  // click still surfaces something instead of silently showing everything.
+  private applyQueryParams(): void {
     const params = this.route.snapshot.queryParamMap;
     const q = params.get('q');
     const item = params.get('item');
@@ -64,47 +108,47 @@ export class ProductsComponent implements OnInit {
       this.searchTerm.set(q);
     }
 
+    const same = (a: string, b: string) => a.trim().toLowerCase() === b.trim().toLowerCase();
+
     if (item) {
-      // Links built from CategoryNavComponent's draft subcategory list — see
-      // the taxonomy note in core/data/products.data.ts. Select the matching
-      // type if we have one; otherwise fall back to search so the click
-      // still surfaces something instead of silently showing everything.
-      const matchedType = this.allTypes.find((t) => t.toLowerCase() === item.toLowerCase());
-      if (matchedType) {
-        this.selectedTypes.set(new Set([matchedType]));
+      const matched = this.categoryGroups()
+        .flatMap((g) => g.types)
+        .find((t) => same(t.name, item) || same(t.seoName, item));
+      if (matched) {
+        this.selectedTypes.set(new Set([matched.id]));
       } else if (!q) {
         this.searchTerm.set(item);
       }
     } else if (category) {
-      const matchedGroup = this.categoryGroups.find((g) => g.category.toLowerCase() === category.toLowerCase());
-      if (matchedGroup) {
-        this.selectedTypes.set(new Set(matchedGroup.types));
+      const group = this.categoryGroups().find((g) => same(g.name, category) || same(g.seoName, category));
+      if (group) {
+        this.selectedTypes.set(new Set(group.types.map((t) => t.id)));
       } else if (!q) {
         this.searchTerm.set(category);
       }
     }
   }
 
-  toggleType(type: string): void {
+  toggleType(typeId: number): void {
     const next = new Set(this.selectedTypes());
-    if (next.has(type)) {
-      next.delete(type);
+    if (next.has(typeId)) {
+      next.delete(typeId);
     } else {
-      next.add(type);
+      next.add(typeId);
     }
     this.selectedTypes.set(next);
   }
 
-  isTypeActive(type: string): boolean {
-    return this.selectedTypes().has(type);
+  isTypeActive(typeId: number): boolean {
+    return this.selectedTypes().has(typeId);
   }
 
-  countFor(type: string): number {
-    return this.typeCounts.get(type) ?? 0;
+  countFor(typeId: number): number {
+    return this.typeCounts().get(typeId) ?? 0;
   }
 
   clearFilters(): void {
-    this.selectedTypes.set(new Set(this.allTypes));
+    this.selectedTypes.set(new Set(this.allTypeIds()));
     this.searchTerm.set('');
     this.sortKey.set('name-asc');
   }
@@ -119,26 +163,5 @@ export class ProductsComponent implements OnInit {
 
   onSortChange(value: string): void {
     this.sortKey.set(value as SortKey);
-  }
-
-  private buildCategoryGroups(): CategoryGroup[] {
-    const map = new Map<string, string[]>();
-    for (const p of PRODUCTS) {
-      const types = map.get(p.category) ?? [];
-      if (!types.includes(p.type)) types.push(p.type);
-      map.set(p.category, types);
-    }
-    return Array.from(map.entries()).map(([category, types]) => ({
-      category,
-      types: types.sort((a, b) => a.localeCompare(b)),
-    }));
-  }
-
-  private buildTypeCounts(): Map<string, number> {
-    const counts = new Map<string, number>();
-    for (const p of PRODUCTS) {
-      counts.set(p.type, (counts.get(p.type) ?? 0) + 1);
-    }
-    return counts;
   }
 }

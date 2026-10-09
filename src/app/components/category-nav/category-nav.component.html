@@ -1,25 +1,43 @@
 <!-- Shared category list markup — rendered once for the desktop bar, once
      inside the mobile "Products" slider — via ngTemplateOutlet so the
-     category data and per-item dropdown only need to be written once. -->
+     category data and per-item dropdown only need to be written once.
+     Data comes from GET /api/catalog/categories: first 5 categories (each
+     with up to 10 sub-categories); any further categories go under "Others". -->
 <ng-template #categoryItems>
-  <li class="nav-item dropdown" *ngFor="let category of categories">
+  <li class="nav-item dropdown" *ngFor="let category of categories()">
     <button
       class="nav-link dropdown-toggle category-trigger"
       type="button"
       data-bs-toggle="dropdown"
       aria-expanded="false"
     >
-      {{ category.label }}
+      {{ category.name }}
     </button>
     <ul class="dropdown-menu category-menu">
-      <li *ngFor="let item of category.items">
-        <a class="dropdown-item" href="/products?category={{ category.label }}&item={{ item }}">{{ item }}</a>
+      <li *ngFor="let sub of category.subCategories">
+        <a class="dropdown-item" [href]="subCategoryLink(category.name, sub.name)">{{ sub.name }}</a>
       </li>
-      <li><hr class="dropdown-divider" /></li>
+      <li *ngIf="category.subCategories.length > 0"><hr class="dropdown-divider" /></li>
       <li>
-        <a class="dropdown-item category-view-all fw-semibold" href="/products?category={{ category.label }}">
-          View all {{ category.label }}
+        <a class="dropdown-item category-view-all fw-semibold" [href]="categoryLink(category.name)">
+          View all {{ category.name }}
         </a>
+      </li>
+    </ul>
+  </li>
+
+  <li class="nav-item dropdown" *ngIf="otherCategories().length > 0">
+    <button
+      class="nav-link dropdown-toggle category-trigger"
+      type="button"
+      data-bs-toggle="dropdown"
+      aria-expanded="false"
+    >
+      Others
+    </button>
+    <ul class="dropdown-menu category-menu">
+      <li *ngFor="let category of otherCategories()">
+        <a class="dropdown-item" [href]="categoryLink(category.name)">{{ category.name }}</a>
       </li>
     </ul>
   </li>

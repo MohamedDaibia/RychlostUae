@@ -1,4 +1,312 @@
-<div class="tab-panel">
-  <h2>Products</h2>
-  <p class="tab-panel__hint">This section is under construction — check back soon.</p>
+<div class="products-page">
+  <div class="products-page__header">
+    <div class="search-box">
+      <svg class="search-box__icon" viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true">
+        <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.6" />
+        <path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+      </svg>
+      <input
+        type="text"
+        placeholder="Search products…"
+        [ngModel]="searchQuery()"
+        (ngModelChange)="onSearchChange($event)"
+        name="search"
+      />
+    </div>
+
+    <button type="button" class="action-btn action-btn--primary" (click)="openAddModal()">Add Product</button>
+  </div>
+
+  @if (listError()) {
+    <p class="admin-alert admin-alert--error" role="alert">{{ listError() }}</p>
+  }
+
+  @if (loading()) {
+    <p class="admin-alert">Loading products…</p>
+  } @else if (loadError()) {
+    <p class="admin-alert admin-alert--error" role="alert">
+      {{ loadError() }}
+      <button type="button" class="link-btn" (click)="load()">Try again</button>
+    </p>
+  }
+
+  <div class="products-list">
+    @for (product of pagedProducts(); track trackById($index, product)) {
+      <div class="product-row">
+        <div class="product-row__image">
+          @if (product.imageUrls[0]) {
+            <img [src]="product.imageUrls[0]" [alt]="product.name" />
+          }
+        </div>
+
+        <div class="product-row__info">
+          <span class="product-row__name">{{ product.name }}</span>
+          <span class="product-row__meta">
+            {{ categoryName(product.categoryId) }} › {{ subCategoryName(product.subCategoryId) }}
+          </span>
+        </div>
+
+        <span class="product-row__price">{{ formatPrice(product.priceAed) }}</span>
+
+        <span
+          class="product-row__status"
+          [class.product-row__status--active]="product.status === 'active'"
+          [class.product-row__status--inactive]="product.status === 'inactive'"
+        >
+          {{ product.status === 'active' ? 'Active' : 'Inactive' }}
+        </span>
+
+        <div class="product-row__actions">
+          <button type="button" class="action-btn action-btn--primary" (click)="openEditModal(product)">Edit</button>
+          <button type="button" class="action-btn action-btn--danger" (click)="deleteProduct(product)">Delete</button>
+        </div>
+      </div>
+    } @empty {
+      @if (!loading() && !loadError()) {
+        <p class="products-list__empty">No products found.</p>
+      }
+    }
+  </div>
+
+  @if (filteredProducts().length > 0) {
+    <div class="pagination">
+      <span class="pagination__info">
+        Page {{ currentPage() }} of {{ totalPages() }} ({{ filteredProducts().length }} total)
+      </span>
+      <div class="pagination__controls">
+        <button type="button" class="action-btn action-btn--secondary" [disabled]="currentPage() === 1" (click)="prevPage()">
+          Previous
+        </button>
+        <button
+          type="button"
+          class="action-btn action-btn--secondary"
+          [disabled]="currentPage() === totalPages()"
+          (click)="nextPage()"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  }
 </div>
+
+@if (isModalOpen()) {
+  <div class="modal-backdrop" (click)="closeModal()">
+    <div class="modal-panel modal-panel--wide" (click)="$event.stopPropagation()">
+      <div class="modal-panel__body">
+        <h3 class="form-title">{{ formName.trim() || 'New product' }}</h3>
+
+        <div class="modal-panel__field">
+          <label for="productName">Product name</label>
+          <input id="productName" type="text" maxlength="200" [(ngModel)]="formName" name="productName" />
+        </div>
+
+        <div class="modal-panel__field">
+          <label for="productDescription">Description</label>
+          <textarea
+            id="productDescription"
+            rows="5"
+            maxlength="4000"
+            [(ngModel)]="formDescription"
+            name="productDescription"
+          ></textarea>
+        </div>
+
+        <div class="modal-panel__row">
+          <div class="modal-panel__field">
+            <label for="productCategory">Category</label>
+            <select
+              id="productCategory"
+              [(ngModel)]="formCategoryId"
+              (ngModelChange)="onFormCategoryChange()"
+              name="productCategory"
+            >
+              @for (category of categories(); track category.id) {
+                <option [ngValue]="category.id">{{ category.name }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="modal-panel__field">
+            <label for="productType">Product type</label>
+            <select id="productType" [(ngModel)]="formSubCategoryId" name="productType">
+              <option [ngValue]="null" disabled>Select a product type</option>
+              @for (sub of formSubCategoryOptions(); track sub.id) {
+                <option [ngValue]="sub.id">{{ sub.name }}</option>
+              }
+            </select>
+            @if (formCategoryId !== null && formSubCategoryOptions().length === 0) {
+              <span class="field-hint">This category has no product types yet — add one in the Sub Categories tab.</span>
+            }
+          </div>
+        </div>
+
+        <div class="modal-panel__row">
+          <div class="modal-panel__field">
+            <label for="productPrice">Cost (AED)</label>
+            <input id="productPrice" type="number" min="0" step="0.01" [(ngModel)]="formPrice" name="productPrice" />
+          </div>
+
+          <div class="modal-panel__field">
+            <label for="productStatus">Status</label>
+            <select id="productStatus" [(ngModel)]="formStatus" name="productStatus">
+              <option value="active">Active (shown on the website)</option>
+              <option value="inactive">Inactive (hidden from the website)</option>
+            </select>
+          </div>
+        </div>
+
+        <fieldset class="form-section">
+          <legend>Pictures</legend>
+          <span class="field-hint">
+            One main picture is required; up to four more are optional. JPG, PNG or WebP — larger than 512 KB is
+            shrunk automatically.
+          </span>
+          @if (processingImage()) {
+            <span class="field-hint">Optimizing image…</span>
+          }
+
+          <div class="picture-grid">
+            @for (slot of slotIndexes; track slot) {
+              <div class="picture-slot" [class.picture-slot--main]="slot === 0">
+                <div class="picture-slot__preview">
+                  @if (formImages[slot].preview) {
+                    <img [src]="formImages[slot].preview" [alt]="slotLabel(slot)" />
+                  } @else {
+                    <span>{{ slot === 0 ? 'Main' : slot + 1 }}</span>
+                  }
+                </div>
+                <label class="picture-slot__label" [attr.for]="'productImage' + slot">{{ slotLabel(slot) }}</label>
+                <input
+                  #imageInput
+                  [id]="'productImage' + slot"
+                  type="file"
+                  accept=".jpg,.jpeg,.png,.webp"
+                  (change)="onImageSelected(slot, $event)"
+                />
+                @if (slot > 0 && formImages[slot].preview) {
+                  <button type="button" class="link-btn" (click)="clearImage(slot, imageInput)">Remove</button>
+                }
+              </div>
+            }
+          </div>
+        </fieldset>
+
+        <fieldset class="form-section">
+          <legend>Variants</legend>
+          <span class="field-hint">
+            Pick a colour and give the size as weight (kg), length (m) and/or number of pieces. Leave a size blank if
+            it doesn't apply.
+          </span>
+
+          @if (formVariants.length > 0) {
+            <div class="variant-table">
+              <div class="variant-table__head">
+                <span>Colour</span>
+                <span>Weight (kg)</span>
+                <span>Length (m)</span>
+                <span>Pieces</span>
+                <span></span>
+              </div>
+              @for (variant of formVariants; track $index; let i = $index) {
+                <div class="variant-table__row">
+                  <div class="color-cell">
+                    <input
+                      type="color"
+                      [(ngModel)]="variant.color"
+                      [name]="'variantColor' + i"
+                      [disabled]="!variant.useColor"
+                      [attr.aria-label]="'Variant ' + (i + 1) + ' colour'"
+                    />
+                    <label class="color-cell__toggle">
+                      <input type="checkbox" [(ngModel)]="variant.useColor" [name]="'variantUseColor' + i" />
+                      <span>{{ variant.useColor ? variant.color : 'No colour' }}</span>
+                    </label>
+                  </div>
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.001"
+                    [(ngModel)]="variant.weightKg"
+                    [name]="'variantKg' + i"
+                    aria-label="Weight in kg"
+                  />
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.001"
+                    [(ngModel)]="variant.lengthM"
+                    [name]="'variantLength' + i"
+                    aria-label="Length in metres"
+                  />
+                  <input
+                    type="number"
+                    min="0"
+                    step="1"
+                    [(ngModel)]="variant.pieces"
+                    [name]="'variantPieces' + i"
+                    aria-label="Pieces"
+                  />
+                  <button type="button" class="link-btn link-btn--danger" (click)="removeVariant(i)">Remove</button>
+                </div>
+              }
+            </div>
+          }
+
+          <button type="button" class="action-btn action-btn--secondary action-btn--small" (click)="addVariant()">
+            + Add variant
+          </button>
+        </fieldset>
+
+        <fieldset class="form-section">
+          <legend>Items &amp; descriptions</legend>
+          <span class="field-hint">A list of items (e.g. what's included, or specification lines) with a description for each.</span>
+
+          @for (row of formItems; track $index; let i = $index) {
+            <div class="item-row">
+              <input
+                type="text"
+                maxlength="200"
+                placeholder="Item"
+                [(ngModel)]="row.item"
+                [name]="'itemName' + i"
+                [attr.aria-label]="'Item ' + (i + 1)"
+              />
+              <input
+                type="text"
+                maxlength="1000"
+                placeholder="Description"
+                [(ngModel)]="row.description"
+                [name]="'itemDescription' + i"
+                [attr.aria-label]="'Description of item ' + (i + 1)"
+              />
+              <button type="button" class="link-btn link-btn--danger" (click)="removeItem(i)">Remove</button>
+            </div>
+          }
+
+          <button type="button" class="action-btn action-btn--secondary action-btn--small" (click)="addItem()">
+            + Add item
+          </button>
+        </fieldset>
+      </div>
+
+      @if (formError()) {
+        <p class="admin-alert admin-alert--error modal-panel__error" role="alert">{{ formError() }}</p>
+      }
+
+      <div class="modal-panel__footer">
+        <button type="button" class="action-btn action-btn--secondary" [disabled]="saving()" (click)="closeModal()">
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="action-btn action-btn--primary"
+          [disabled]="saving() || processingImage()"
+          (click)="saveChanges()"
+        >
+          {{ saving() ? 'Saving…' : 'Save changes' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

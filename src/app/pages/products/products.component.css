@@ -331,3 +331,14 @@
   outline: 2px solid var(--color-cyan-700);
   outline-offset: 2px;
 }
+
+.products-retry {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-cyan-700, #0a7a85);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}

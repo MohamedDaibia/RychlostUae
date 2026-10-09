@@ -15,6 +15,7 @@ import { AdminProductsLayoutComponent } from './pages/admin/products/admin-produ
 import { AdminCategoriesComponent } from './pages/admin/products/admin-categories.component';
 import { AdminSubCategoriesComponent } from './pages/admin/products/admin-sub-categories.component';
 import { AdminProductsListComponent } from './pages/admin/products/admin-products-list.component';
+import { AdminOrdersComponent } from './pages/admin/orders/admin-orders.component';
 import { authGuard } from './core/auth/auth.guard';
 
 // Header, Category Nav, and Footer stay mounted in AppComponent across every
@@ -54,6 +55,7 @@ export const routes: Routes = [
           { path: 'products', component: AdminProductsListComponent },
         ],
       },
+      { path: 'orders', component: AdminOrdersComponent },
       { path: 'settings', component: AdminComingSoonComponent, data: { title: 'Settings' } },
       { path: 'stocks', component: AdminComingSoonComponent, data: { title: 'Stocks' } },
       { path: 'billing', component: AdminComingSoonComponent, data: { title: 'Billing' } },
